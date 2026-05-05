@@ -8,9 +8,11 @@
         <h3>Data Kas Keluar</h3>
     </div>
     <div class="col-md-6 text-end">
-        <a href="{{ route('kas_keluar.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Tambah Kas Keluar
-        </a>
+        @if (auth()->user()->role === 'bendahara' || auth()->user()->role === 'admin')
+            <a href="{{ route('kas_keluar.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Tambah Kas Keluar
+            </a>
+        @endif
     </div>
 </div>
 
@@ -37,25 +39,64 @@
                         <td><strong>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</strong></td>
                         <td>
                             @if ($item->status === 'pending')
-                                <span class="badge bg-warning">Pending</span>
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-clock"></i> Pending
+                                </span>
                             @elseif ($item->status === 'approved')
-                                <span class="badge bg-success">Approved</span>
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i> Approved
+                                </span>
                             @else
-                                <span class="badge bg-danger">Rejected</span>
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle"></i> Rejected
+                                </span>
                             @endif
                         </td>
                         <td>{{ $item->user->name }}</td>
                         <td>
-                            <a href="{{ route('kas_keluar.edit', $item) }}" class="btn btn-sm btn-warning">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form action="{{ route('kas_keluar.destroy', $item) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
+                            <div class="btn-group btn-group-sm" role="group">
+                                {{-- Edit button: only for owner (bendahara) if pending, or admin --}}
+                                @if ((auth()->user()->role === 'bendahara' && $item->user_id === auth()->id() && $item->status === 'pending') || 
+                                     (auth()->user()->role === 'admin'))
+                                    <a href="{{ route('kas_keluar.edit', $item) }}" class="btn btn-warning" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                @endif
+
+                                {{-- Delete button: only for owner if pending, or admin --}}
+                                @if ((auth()->user()->role === 'bendahara' && $item->user_id === auth()->id() && $item->status === 'pending') || 
+                                     (auth()->user()->role === 'admin'))
+                                    <form action="{{ route('kas_keluar.destroy', $item) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" 
+                                                onclick="return confirm('Yakin ingin menghapus?')" title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- Approve button: admin only, for pending items --}}
+                                @if (auth()->user()->role === 'admin' && $item->status === 'pending')
+                                    <form action="{{ route('kas_keluar.approve', $item) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm" title="Approve">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- Reject button: admin only, for pending items --}}
+                                @if (auth()->user()->role === 'admin' && $item->status === 'pending')
+                                    <form action="{{ route('kas_keluar.reject', $item) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm" 
+                                                onclick="return confirm('Yakin ingin menolak?')" title="Reject">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty

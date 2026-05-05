@@ -8,6 +8,15 @@
         <div class="card">
             <div class="card-header bg-light">
                 <h5 class="mb-0">Edit Data Kas Keluar</h5>
+                <small class="text-muted">
+                    Status: <span class="badge 
+                        @if ($kasKeluar->status === 'pending') bg-warning text-dark
+                        @elseif ($kasKeluar->status === 'approved') bg-success
+                        @else bg-danger
+                        @endif">
+                        {{ ucfirst($kasKeluar->status) }}
+                    </span>
+                </small>
             </div>
             <div class="card-body">
                 <form action="{{ route('kas_keluar.update', $kasKeluar) }}" method="POST">
@@ -25,10 +34,13 @@
 
                     <div class="mb-3">
                         <label for="jumlah" class="form-label">Jumlah <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" class="form-control @error('jumlah') is-invalid @enderror" 
-                               id="jumlah" name="jumlah" value="{{ old('jumlah', $kasKeluar->jumlah) }}" required>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" step="0.01" class="form-control @error('jumlah') is-invalid @enderror" 
+                                   id="jumlah" name="jumlah" value="{{ old('jumlah', $kasKeluar->jumlah) }}" required>
+                        </div>
                         @error('jumlah')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -49,26 +61,24 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select class="form-select @error('status') is-invalid @enderror" 
-                                id="status" name="status">
-                            <option value="pending" @selected(old('status', $kasKeluar->status) == 'pending')>Pending</option>
-                            <option value="approved" @selected(old('status', $kasKeluar->status) == 'approved')>Approved</option>
-                            <option value="rejected" @selected(old('status', $kasKeluar->status) == 'rejected')>Rejected</option>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <label for="keterangan" class="form-label">Keterangan <span class="text-danger">*</span></label>
+                        <textarea class="form-control @error('keterangan') is-invalid @enderror" 
+                                  id="keterangan" name="keterangan" rows="3" required
+                                  placeholder="Masukkan keterangan pengeluaran...">{{ old('keterangan', $kasKeluar->keterangan) }}</textarea>
+                        <small class="text-muted">Minimal 3 karakter, maksimal 255 karakter</small>
+                        @error('keterangan')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="keterangan" class="form-label">Keterangan <span class="text-danger">*</span></label>
-                        <textarea class="form-control @error('keterangan') is-invalid @enderror" 
-                                  id="keterangan" name="keterangan" rows="3" required>{{ old('keterangan', $kasKeluar->keterangan) }}</textarea>
-                        @error('keterangan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    {{-- Status info for non-admin users --}}
+                    @if (auth()->user()->role !== 'admin')
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Catatan:</strong> Anda hanya dapat mengedit data yang masih berstatus <strong>Pending</strong>. 
+                            Untuk data yang sudah di-approve atau reject, hubungi admin.
+                        </div>
+                    @endif
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('kas_keluar.index') }}" class="btn btn-secondary">Batal</a>
