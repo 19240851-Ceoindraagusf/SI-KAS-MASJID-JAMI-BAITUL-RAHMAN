@@ -47,23 +47,32 @@ class LaporanController extends Controller
             abort(404);
         }
 
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
 
-        $query = $type === 'masuk' ? KasMasuk::with('kategori', 'user') : KasKeluar::with('kategori', 'user');
+            $query = $type === 'masuk' ? KasMasuk::with('kategori', 'user') : KasKeluar::with('kategori', 'user');
 
-        $data = $query
-            ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
-            ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
-            ->orderBy('tanggal', 'desc')
-            ->get();
+            $data = $query
+                ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+                ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+                ->orderBy('tanggal', 'desc')
+                ->get();
 
-        $judul = $type === 'masuk' ? 'Laporan Kas Masuk' : 'Laporan Kas Keluar';
-        $total = $data->sum('jumlah');
-        $fileName = "laporan-kas-{$type}-" . now()->format('YmdHis') . '.pdf';
+            $judul = $type === 'masuk' ? 'Laporan Kas Masuk' : 'Laporan Kas Keluar';
+            $total = $data->sum('jumlah');
+            $fileName = "laporan-kas-{$type}-" . now()->format('YmdHis') . '.pdf';
 
-        $pdf = Pdf::loadView('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'));
+            $pdf = Pdf::loadView('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'));
 
-        return $pdf->download($fileName);
+            return $pdf->download($fileName);
+        } catch (\Exception $e) {
+            \Log::error('PDF Export Error: ' . $e->getMessage(), [
+                'type' => $type,
+                'exception' => $e
+            ]);
+            
+            return back()->withErrors('Error: Gagal membuat PDF. ' . $e->getMessage());
+        }
     }
 }

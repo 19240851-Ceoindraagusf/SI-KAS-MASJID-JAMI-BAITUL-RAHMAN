@@ -43,6 +43,9 @@
         .text-right {
             text-align: right;
         }
+        .text-center {
+            text-align: center;
+        }
         .summary {
             margin-top: 16px;
             font-size: 13px;
@@ -76,14 +79,14 @@
         <tbody>
             @forelse ($data as $item)
                 <tr>
-                    <td>{{ $item->tanggal->format('d/m/Y') }}</td>
-                    <td>{{ $item->kategori->nama_kategori }}</td>
-                    <td>{{ $item->keterangan }}</td>
-                    <td class="text-right">Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                    <td>{{ $item->tanggal?->format('d/m/Y') ?? '-' }}</td>
+                    <td>{{ $item->kategori?->nama_kategori ?? '-' }}</td>
+                    <td>{{ $item->keterangan ?? '-' }}</td>
+                    <td class="text-right">{{ $item->jumlah ? 'Rp ' . number_format($item->jumlah, 0, ',', '.') : '-' }}</td>
                     @if ($type === 'keluar')
-                        <td>{{ ucfirst($item->status) }}</td>
+                        <td>{{ ucfirst($item->status ?? '-') }}</td>
                     @endif
-                    <td>{{ $item->user->name }}</td>
+                    <td>{{ $item->user?->name ?? '-' }}</td>
                 </tr>
             @empty
                 <tr>
