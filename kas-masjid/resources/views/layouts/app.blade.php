@@ -4,138 +4,548 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Kas Masjid Baitul Rahman')</title>
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
     <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --navbar-bg: #0f172a;
+            --text-light: #e2e8f0;
+            --text-dark: #1e293b;
+            --bg-light: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             display: flex;
             min-height: 100vh;
-            background-color: #f5f5f5;
         }
+
+        /* SIDEBAR STYLES */
         .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
-            padding: 20px 0;
+            width: 260px;
+            background: linear-gradient(135deg, var(--sidebar-bg) 0%, #0f172a 100%);
+            padding: 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease;
         }
-        .sidebar a {
-            color: #ecf0f1;
-            text-decoration: none;
-            display: block;
-            padding: 12px 20px;
-            transition: background-color 0.3s;
-        }
-        .sidebar a:hover,
-        .sidebar a.active {
-            background-color: #34495e;
-            border-left: 4px solid #3498db;
-            padding-left: 16px;
-        }
+
         .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #34495e;
-            color: #ecf0f1;
-            font-size: 18px;
-            font-weight: bold;
+            padding: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
         }
+
+        .sidebar-header h4 {
+            color: var(--text-light);
+            margin: 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-link {
+            color: rgba(226, 232, 240, 0.7);
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            background-color: var(--sidebar-hover);
+            color: var(--text-light);
+            border-left-color: var(--primary-color);
+            padding-left: 28px;
+        }
+
+        .nav-link.active {
+            background-color: var(--sidebar-hover);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            padding-left: 28px;
+            font-weight: 600;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 15px 0;
+        }
+
+        /* MAIN CONTENT */
         .main-content {
-            margin-left: 250px;
-            width: calc(100% - 250px);
+            margin-left: 260px;
+            width: calc(100% - 260px);
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s ease;
         }
-        .navbar-custom {
-            background-color: #34495e;
+
+        /* NAVBAR */
+        .navbar-top {
+            background: linear-gradient(135deg, var(--navbar-bg) 0%, var(--sidebar-bg) 100%);
             padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+        }
+
+        .navbar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            cursor: pointer;
         }
-        .container-fluid {
-            padding: 30px;
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            color: var(--danger-color);
+        }
+
+        /* CONTENT AREA */
+        .content-wrapper {
             flex: 1;
+            padding: 30px;
+            overflow-y: auto;
         }
-        .card {
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* ALERTS */
+        .alert {
             border: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn-primary {
-            background-color: #3498db;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        .stat-card {
-            background: white;
-            padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
         }
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
+
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
         }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            color: #78350f;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            color: #0c2340;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARDS */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* STAT CARDS */
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.income {
+            border-left-color: var(--secondary-color);
+        }
+
+        .stat-card.expense {
+            border-left-color: var(--danger-color);
+        }
+
+        .stat-card.balance {
+            border-left-color: var(--primary-color);
+        }
+
         .stat-label {
-            color: #7f8c8d;
-            font-size: 14px;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* BUTTONS */
+        .btn {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* TABLES */
+        .table {
+            color: var(--text-dark);
+        }
+
+        .table thead th {
+            background-color: #f8fafc;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* BADGES */
+        .badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-approved {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
+                transform: translateX(-100%);
             }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
             .main-content {
                 margin-left: 0;
                 width: 100%;
             }
+
+            .content-wrapper {
+                padding: 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .navbar-top {
+                padding: 12px 15px;
+            }
+
+            .navbar-title {
+                font-size: 1rem;
+            }
+
+            .table {
+                font-size: 0.85rem;
+            }
+
+            .table thead th,
+            .table tbody td {
+                padding: 10px;
+            }
+        }
+
+        /* SCROLLBAR */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
     @yield('styles')
 </head>
 <body>
-    <div class="sidebar">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <i class="bi bi-piggy-bank"></i> Kas Masjid
+            <h4><i class="bi bi-piggy-bank"></i> KAS MASJID</h4>
         </div>
-        <a href="{{ route('dashboard') }}" class="@if(request()->routeIs('dashboard')) active @endif">
-            <i class="bi bi-speedometer2"></i> Dashboard
-        </a>
-        <a href="{{ route('kas_masuk.index') }}" class="@if(request()->routeIs('kas_masuk.*')) active @endif">
-            <i class="bi bi-arrow-down-circle"></i> Kas Masuk
-        </a>
-        <a href="{{ route('kas_keluar.index') }}" class="@if(request()->routeIs('kas_keluar.*')) active @endif">
-            <i class="bi bi-arrow-up-circle"></i> Kas Keluar
-        </a>
-        <a href="{{ route('laporan.index') }}" class="@if(request()->routeIs('laporan.*')) active @endif">
-            <i class="bi bi-journal-text"></i> Laporan Keuangan
-        </a>
-        <hr style="background-color: #34495e; margin: 20px 0;">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-link" style="color: #ecf0f1; text-align: left; padding: 12px 20px;">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-        </form>
-    </div>
 
+        <div class="sidebar-nav">
+            <a href="{{ route('dashboard') }}" class="nav-link @if(request()->routeIs('dashboard')) active @endif">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('kas_masuk.index') }}" class="nav-link @if(request()->routeIs('kas_masuk.*')) active @endif">
+                <i class="bi bi-arrow-down-circle"></i>
+                <span>Kas Masuk</span>
+            </a>
+
+            <a href="{{ route('kas_keluar.index') }}" class="nav-link @if(request()->routeIs('kas_keluar.*')) active @endif">
+                <i class="bi bi-arrow-up-circle"></i>
+                <span>Kas Keluar</span>
+            </a>
+
+            <a href="{{ route('laporan.index') }}" class="nav-link @if(request()->routeIs('laporan.*')) active @endif">
+                <i class="bi bi-journal-text"></i>
+                <span>Laporan Keuangan</span>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <form action="{{ route('logout') }}" method="POST" class="nav-item">
+                @csrf
+                <button type="submit" class="nav-link" style="border: none; width: 100%; text-align: left;">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
     <div class="main-content">
-        <div class="navbar-custom">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 style="margin: 0;">Sistem Informasi Kas Masjid Jami Baitul Rahman</h5>
-                <span>{{ Auth::user()->name }} ({{ Auth::user()->role }})</span>
+        <!-- NAVBAR -->
+        <nav class="navbar-top">
+            <div class="navbar-title">
+                <i class="bi bi-building"></i>
+                <span>Masjid Jami Baitul Rahman</span>
             </div>
-        </div>
 
-        <div class="container-fluid">
+            <div class="navbar-actions">
+                <div class="user-profile">
+                    <div class="user-avatar" title="{{ Auth::user()->name }}">
+                        {{ substr(Auth::user()->name, 0, 1) }}
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight: 500;">{{ Auth::user()->name }}</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8;">{{ Auth::user()->role }}</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- CONTENT -->
+        <div class="content-wrapper">
+            <!-- ALERTS -->
             @if ($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Terjadi kesalahan!</strong>
-                    <ul class="mb-0">
+                    <strong><i class="bi bi-exclamation-circle"></i> Terjadi kesalahan!</strong>
+                    <ul class="mb-0 mt-2">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -146,7 +556,21 @@
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
+                    <i class="bi bi-check-circle"></i> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('warning'))
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> {{ session('warning') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('info'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle"></i> {{ session('info') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
@@ -155,7 +579,21 @@
         </div>
     </div>
 
+    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Mobile menu toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            
+            // Add responsive behavior if needed
+            if (window.innerWidth <= 768) {
+                // Mobile specific handling
+            }
+        });
+    </script>
+    
     @yield('scripts')
 </body>
 </html>
