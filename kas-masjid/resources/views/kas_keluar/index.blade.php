@@ -401,18 +401,3 @@
     @endif
 </div>
 @endsection
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center py-4">Belum ada data kas keluar</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="mt-3">
-    {{ $items->links() }}
-</div>
-@endsection
