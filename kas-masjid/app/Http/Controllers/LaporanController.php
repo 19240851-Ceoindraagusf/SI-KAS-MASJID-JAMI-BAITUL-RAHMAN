@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\KasKeluar;
+use App\Models\KasMasuk;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+
+class LaporanController extends Controller
+{
+    public function index(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $kasMasuks = KasMasuk::with('kategori', 'user')
+            ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+            ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $kasKeluars = KasKeluar::with('kategori', 'user')
+            ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+            ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $totalMasuk = $kasMasuks->sum('jumlah');
+        $totalKeluar = $kasKeluars->sum('jumlah');
+        $saldoAkhir = $totalMasuk - $totalKeluar;
+
+        return view('laporan.index', compact(
+            'kasMasuks',
+            'kasKeluars',
+            'startDate',
+            'endDate',
+            'totalMasuk',
+            'totalKeluar',
+            'saldoAkhir'
+        ));
+    }
+
+    public function exportPdf(Request $request, string $type)
+    {
+        if (!in_array($type, ['masuk', 'keluar'])) {
+            abort(404);
+        }
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $query = $type === 'masuk' ? KasMasuk::with('kategori', 'user') : KasKeluar::with('kategori', 'user');
+
+        $data = $query
+            ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+            ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $judul = $type === 'masuk' ? 'Laporan Kas Masuk' : 'Laporan Kas Keluar';
+        $total = $data->sum('jumlah');
+        $fileName = "laporan-kas-{$type}-" . now()->format('YmdHis') . '.pdf';
+
+        $pdf = Pdf::loadView('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'));
+
+        return $pdf->download($fileName);
+    }
+}

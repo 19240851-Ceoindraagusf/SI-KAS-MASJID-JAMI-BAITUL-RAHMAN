@@ -111,6 +111,9 @@
         <a href="{{ route('kas_keluar.index') }}" class="@if(request()->routeIs('kas_keluar.*')) active @endif">
             <i class="bi bi-arrow-up-circle"></i> Kas Keluar
         </a>
+        <a href="{{ route('laporan.index') }}" class="@if(request()->routeIs('laporan.*')) active @endif">
+            <i class="bi bi-journal-text"></i> Laporan Keuangan
+        </a>
         <hr style="background-color: #34495e; margin: 20px 0;">
         <form action="{{ route('logout') }}" method="POST">
             @csrf

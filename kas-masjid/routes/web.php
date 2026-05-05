@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KasMasukController;
 use App\Http\Controllers\KasKeluarController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('kas_masuk', KasMasukController::class)->except(['show']);
     Route::resource('kas_keluar', KasKeluarController::class)->except(['show']);
+    Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('laporan/pdf/{type}', [LaporanController::class, 'exportPdf'])->name('laporan.export');
 
     // Approval routes - Admin only
     Route::middleware(['role:admin'])->group(function () {
