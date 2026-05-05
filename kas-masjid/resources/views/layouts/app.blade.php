@@ -481,7 +481,53 @@
     <!-- SIDEBAR -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h4><i class="bi bi-piggy-bank"></i> KAS MASJID</h4>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <!-- Mosque Logo SVG -->
+                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+                    <!-- Main dome -->
+                    <ellipse cx="50" cy="40" rx="28" ry="32" fill="white" opacity="0.9"/>
+                    
+                    <!-- Dome top -->
+                    <path d="M 50 8 Q 65 25 58 40 Q 50 50 42 40 Q 35 25 50 8" fill="white"/>
+                    
+                    <!-- Crescent moon on dome -->
+                    <circle cx="50" cy="28" r="8" fill="white" opacity="0.7"/>
+                    <circle cx="54" cy="28" r="8" fill="#4f46e5"/>
+                    
+                    <!-- Star on crescent -->
+                    <g transform="translate(54, 22)">
+                        <polygon points="0,-3 1,-1 3,-1 1,0 2,2 0,1 -2,2 -1,0 -3,-1 -1,-1" fill="white"/>
+                    </g>
+                    
+                    <!-- Left minaret -->
+                    <rect x="18" y="45" width="6" height="30" fill="white" opacity="0.85"/>
+                    <rect x="16" y="42" width="10" height="4" fill="white" opacity="0.9"/>
+                    <polygon points="16,42 26,42 23,38 19,38" fill="white"/>
+                    
+                    <!-- Right minaret -->
+                    <rect x="76" y="45" width="6" height="30" fill="white" opacity="0.85"/>
+                    <rect x="74" y="42" width="10" height="4" fill="white" opacity="0.9"/>
+                    <polygon points="74,42 84,42 81,38 77,38" fill="white"/>
+                    
+                    <!-- Center minaret (taller) -->
+                    <rect x="47" y="35" width="6" height="40" fill="white" opacity="0.9"/>
+                    <rect x="45" y="32" width="10" height="4" fill="white"/>
+                    <polygon points="45,32 55,32 52,26 48,26" fill="white"/>
+                    
+                    <!-- Base building -->
+                    <rect x="20" y="75" width="60" height="20" fill="white" opacity="0.8" rx="2"/>
+                    
+                    <!-- Door -->
+                    <rect x="46" y="80" width="8" height="15" fill="#4f46e5" opacity="0.6"/>
+                    
+                    <!-- Windows -->
+                    <circle cx="30" cy="83" r="2" fill="#4f46e5" opacity="0.5"/>
+                    <circle cx="70" cy="83" r="2" fill="#4f46e5" opacity="0.5"/>
+                    <circle cx="30" cy="88" r="2" fill="#4f46e5" opacity="0.5"/>
+                    <circle cx="70" cy="88" r="2" fill="#4f46e5" opacity="0.5"/>
+                </svg>
+                <h4 style="margin: 0; white-space: nowrap;">KAS MASJID</h4>
+            </div>
         </div>
 
         <div class="sidebar-nav">

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KasKeluar;
 use App\Models\KasMasuk;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\PdfService;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -27,7 +27,12 @@ class LaporanController extends Controller
             ->get();
 
         $totalMasuk = $kasMasuks->sum('jumlah');
-        $totalKeluar = $kasKeluars->sum('jumlah');
+        // Only count approved kas keluar for saldo akhir calculation
+        $kasKeluarsApproved = KasKeluar::where('status', 'approved')
+            ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+            ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+            ->get();
+        $totalKeluar = $kasKeluarsApproved->sum('jumlah');
         $saldoAkhir = $totalMasuk - $totalKeluar;
 
         return view('laporan.index', compact(
@@ -54,6 +59,7 @@ class LaporanController extends Controller
             $query = $type === 'masuk' ? KasMasuk::with('kategori', 'user') : KasKeluar::with('kategori', 'user');
 
             $data = $query
+                ->when($type === 'keluar', fn($q) => $q->where('status', 'approved'))
                 ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
                 ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
                 ->orderBy('tanggal', 'desc')
@@ -63,9 +69,19 @@ class LaporanController extends Controller
             $total = $data->sum('jumlah');
             $fileName = "laporan-kas-{$type}-" . now()->format('YmdHis') . '.pdf';
 
-            $pdf = Pdf::loadView('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'));
+            // Render the Blade template to HTML
+            $html = view('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'))->render();
 
-            return $pdf->download($fileName);
+            // Create PDF using PdfService
+            $pdf = new PdfService();
+            $pdf->loadHtml($html)
+                ->setPaper('A4', 'portrait')
+                ->render();
+
+            // Return PDF download response
+            return response($pdf->output(), 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
         } catch (\Exception $e) {
             \Log::error('PDF Export Error: ' . $e->getMessage(), [
                 'type' => $type,

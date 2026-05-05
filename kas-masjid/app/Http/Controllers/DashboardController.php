@@ -12,7 +12,8 @@ class DashboardController extends Controller
     public function index()
     {
         $totalMasuk = KasMasuk::sum('jumlah');
-        $totalKeluar = KasKeluar::sum('jumlah');
+        // Only count approved kas keluar for saldo calculation
+        $totalKeluar = KasKeluar::where('status', 'approved')->sum('jumlah');
         $saldo = $totalMasuk - $totalKeluar;
 
         // Data untuk Chart - Kas Masuk & Keluar per Kategori
@@ -22,6 +23,7 @@ class DashboardController extends Controller
             ->get();
 
         $kasKeluarByKategori = KasKeluar::with('kategori')
+            ->where('status', 'approved')
             ->select('kategori_id', DB::raw('SUM(jumlah) as total'))
             ->groupBy('kategori_id')
             ->get();
@@ -36,7 +38,8 @@ class DashboardController extends Controller
                 ->whereYear('tanggal', $date->year)
                 ->sum('jumlah');
             
-            $keluar = KasKeluar::whereMonth('tanggal', $date->month)
+            $keluar = KasKeluar::where('status', 'approved')
+                ->whereMonth('tanggal', $date->month)
                 ->whereYear('tanggal', $date->year)
                 ->sum('jumlah');
             
