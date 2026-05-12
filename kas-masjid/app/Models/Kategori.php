@@ -12,6 +12,7 @@ class Kategori extends Model
     use HasFactory;
 
     protected $fillable = [
+        'tipe',
         'nama_kategori',
         'deskripsi',
     ];

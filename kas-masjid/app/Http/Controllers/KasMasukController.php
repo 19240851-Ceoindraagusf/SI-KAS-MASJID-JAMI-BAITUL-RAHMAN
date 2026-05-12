@@ -32,14 +32,14 @@ class KasMasukController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
+        $kategoris = Kategori::where('tipe', 'kas_masuk')->orderBy('nama_kategori')->get();
 
         return view('kas_masuk.index', compact('items', 'kategoris', 'search', 'kategoriId', 'startDate', 'endDate'));
     }
 
     public function create()
     {
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::where('tipe', 'kas_masuk')->orderBy('nama_kategori')->get();
         return view('kas_masuk.create', compact('kategoris'));
     }
 
@@ -74,7 +74,7 @@ class KasMasukController extends Controller
 
     public function edit(KasMasuk $kasMasuk)
     {
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::where('tipe', 'kas_masuk')->orderBy('nama_kategori')->get();
         return view('kas_masuk.edit', compact('kasMasuk', 'kategoris'));
     }
 

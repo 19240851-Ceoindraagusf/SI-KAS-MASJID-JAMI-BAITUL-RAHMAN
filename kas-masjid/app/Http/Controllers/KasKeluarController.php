@@ -43,7 +43,7 @@ class KasKeluarController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
+        $kategoris = Kategori::where('tipe', 'kas_keluar')->orderBy('nama_kategori')->get();
         
         return view('kas_keluar.index', compact('items', 'kategoris', 'search', 'kategoriId', 'status', 'startDate', 'endDate'));
     }
@@ -53,7 +53,7 @@ class KasKeluarController extends Controller
      */
     public function create()
     {
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::where('tipe', 'kas_keluar')->orderBy('nama_kategori')->get();
         return view('kas_keluar.create', compact('kategoris'));
     }
 
@@ -102,7 +102,7 @@ class KasKeluarController extends Controller
             abort(403, 'Anda tidak bisa mengubah data yang sudah diproses');
         }
         
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::where('tipe', 'kas_keluar')->orderBy('nama_kategori')->get();
         return view('kas_keluar.edit', compact('kasKeluar', 'kategoris'));
     }
 
