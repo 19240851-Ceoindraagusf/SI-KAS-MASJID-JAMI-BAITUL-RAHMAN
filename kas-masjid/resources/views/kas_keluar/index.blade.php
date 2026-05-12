@@ -236,6 +236,21 @@
         background-color: #f0f4ff;
     }
 
+    .filter-card {
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 8px;
+        padding: 18px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+        margin-bottom: 22px;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        align-items: end;
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -248,6 +263,11 @@
 
         .table-container {
             padding: 15px;
+        }
+
+        .filter-actions {
+            flex-direction: column;
+            align-items: stretch;
         }
 
         .table thead th,
@@ -282,6 +302,54 @@
     @endif
 </div>
 
+<!-- Filters -->
+<div class="filter-card">
+    <form action="{{ route('kas_keluar.index') }}" method="GET" class="row g-3 align-items-end">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <label for="search" class="form-label">Cari Data</label>
+            <input type="text" name="search" id="search" class="form-control" value="{{ $search }}" placeholder="Keterangan, kategori, penginput">
+        </div>
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <label for="kategori_id" class="form-label">Kategori</label>
+            <select name="kategori_id" id="kategori_id" class="form-select">
+                <option value="">Semua kategori</option>
+                @foreach ($kategoris as $kategori)
+                    <option value="{{ $kategori->id }}" @selected((string) $kategoriId === (string) $kategori->id)>
+                        {{ $kategori->nama_kategori }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <label for="status" class="form-label">Status</label>
+            <select name="status" id="status" class="form-select">
+                <option value="">Semua status</option>
+                <option value="pending" @selected($status === 'pending')>Pending</option>
+                <option value="approved" @selected($status === 'approved')>Approved</option>
+                <option value="rejected" @selected($status === 'rejected')>Rejected</option>
+            </select>
+        </div>
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <label for="start_date" class="form-label">Dari Tanggal</label>
+            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ $startDate }}">
+        </div>
+        <div class="col-xl-2 col-lg-4 col-md-6">
+            <label for="end_date" class="form-label">Sampai Tanggal</label>
+            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ $endDate }}">
+        </div>
+        <div class="col-xl-1 col-lg-4">
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+                <a href="{{ route('kas_keluar.index') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
 <!-- Table Container -->
 <div class="table-container">
     @if ($items->count() > 0)
@@ -290,10 +358,12 @@
                 <thead>
                     <tr>
                         <th>Tanggal</th>
+                        <th>Kode</th>
                         <th>Kategori</th>
                         <th>Keterangan</th>
                         <th>Jumlah</th>
                         <th>Status</th>
+                        <th>Bukti</th>
                         <th>Penginput</th>
                         <th>Aksi</th>
                     </tr>
@@ -304,6 +374,9 @@
                             <td class="date-cell">
                                 <i class="bi bi-calendar3"></i>
                                 {{ $item->tanggal->format('d/m/Y') }}
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ $item->kode_transaksi ?: 'KK-' . str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</span>
                             </td>
                             <td>
                                 <span style="background: #fee2e2; color: #991b1b; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 500;">
@@ -327,6 +400,15 @@
                                     <span class="status-badge status-rejected">
                                         <i class="bi bi-x-circle"></i> Rejected
                                     </span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($item->bukti_path)
+                                    <a href="{{ asset('storage/' . $item->bukti_path) }}" class="btn-action btn-edit" title="Lihat bukti" target="_blank">
+                                        <i class="bi bi-paperclip"></i>
+                                    </a>
+                                @else
+                                    <span class="text-muted">-</span>
                                 @endif
                             </td>
                             <td>

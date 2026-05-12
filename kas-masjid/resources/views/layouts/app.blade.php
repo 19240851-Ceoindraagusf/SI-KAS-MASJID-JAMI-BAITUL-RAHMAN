@@ -474,6 +474,480 @@
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.3);
         }
+
+        /* PROFESSIONAL POLISH */
+        :root {
+            --primary-color: #0f766e;
+            --primary-dark: #115e59;
+            --secondary-color: #16a34a;
+            --danger-color: #dc2626;
+            --warning-color: #d97706;
+            --sidebar-bg: #0b1f1d;
+            --sidebar-hover: rgba(20, 184, 166, 0.12);
+            --navbar-bg: #ffffff;
+            --text-light: #f8fafc;
+            --text-dark: #0f172a;
+            --bg-light: #f4f7f6;
+            --border-color: #d9e2df;
+            --muted-color: #64748b;
+            --surface-color: #ffffff;
+            --ring-color: rgba(15, 118, 110, 0.18);
+        }
+
+        body {
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(20, 184, 166, 0.12), transparent 34rem),
+                linear-gradient(180deg, #f7faf9 0%, var(--bg-light) 100%);
+            color: var(--text-dark);
+        }
+
+        .sidebar {
+            background:
+                linear-gradient(180deg, rgba(20, 184, 166, 0.14) 0%, rgba(15, 23, 42, 0) 45%),
+                linear-gradient(180deg, #0f2f2b 0%, #071513 100%);
+            box-shadow: 14px 0 35px rgba(15, 23, 42, 0.12);
+        }
+
+        .sidebar-header {
+            padding: 24px 22px;
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        }
+
+        .sidebar-header h4 {
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+        }
+
+        .sidebar-nav {
+            padding: 18px 12px;
+        }
+
+        .nav-link {
+            border-left: 0;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            padding: 12px 14px;
+            color: rgba(248, 250, 252, 0.72);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background-color: var(--sidebar-hover);
+            color: #ffffff;
+            border-left-color: transparent;
+            padding-left: 14px;
+        }
+
+        .nav-link.active {
+            box-shadow: inset 3px 0 0 #2dd4bf;
+            font-weight: 650;
+        }
+
+        .navbar-top {
+            min-height: 74px;
+            background: rgba(255, 255, 255, 0.88);
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+            backdrop-filter: blur(14px);
+        }
+
+        .navbar-title {
+            color: #0f172a;
+            font-size: 1.05rem;
+        }
+
+        .navbar-title i {
+            color: var(--primary-color);
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            box-shadow: 0 8px 18px rgba(15, 118, 110, 0.22);
+        }
+
+        .content-wrapper {
+            padding: 34px;
+        }
+
+        .page-header h1,
+        .dashboard-header h1 {
+            letter-spacing: 0;
+        }
+
+        .card,
+        .stat-card,
+        .chart-card,
+        .activity-card,
+        .table-container {
+            border: 1px solid rgba(148, 163, 184, 0.18) !important;
+            border-radius: 8px !important;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07) !important;
+        }
+
+        .card:hover,
+        .stat-card:hover,
+        .chart-card:hover,
+        .activity-card:hover,
+        .table-container:hover {
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09) !important;
+        }
+
+        .card-header,
+        .table thead,
+        .table thead th {
+            background: #f8fbfa !important;
+        }
+
+        .table {
+            --bs-table-hover-bg: #f7fbfa;
+        }
+
+        .table thead th {
+            border-bottom: 1px solid var(--border-color);
+            color: #334155;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+        }
+
+        .table tbody td {
+            color: #475569;
+            border-bottom-color: #e6eeeb;
+        }
+
+        .form-control,
+        .form-select {
+            border-color: #d8e2df;
+            border-radius: 8px;
+            min-height: 42px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.22rem var(--ring-color);
+        }
+
+        .btn,
+        .btn-add,
+        .btn-action,
+        .status-badge,
+        .badge {
+            border-radius: 8px !important;
+        }
+
+        .btn-primary,
+        .btn-add {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%) !important;
+            box-shadow: 0 10px 20px rgba(15, 118, 110, 0.16);
+        }
+
+        .btn-primary:hover,
+        .btn-add:hover {
+            background: linear-gradient(135deg, #115e59 0%, #0f766e 100%) !important;
+            box-shadow: 0 14px 26px rgba(15, 118, 110, 0.2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--primary-color);
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.42);
+            z-index: 999;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: inline-flex;
+            }
+
+            .navbar-title span {
+                display: none;
+            }
+
+            .navbar-actions .user-profile > div:last-child {
+                display: none;
+            }
+
+            .content-wrapper {
+                padding: 20px 16px;
+            }
+        }
+
+        /* SECOND PASS: APP-WIDE DETAILS */
+        .content-wrapper {
+            max-width: 1480px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 8px;
+            padding: 22px 24px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.055);
+        }
+
+        .page-header h1 {
+            font-size: 1.55rem !important;
+            color: #0f172a !important;
+        }
+
+        .page-header h1 i {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--primary-color) !important;
+            font-size: 1.35rem !important;
+        }
+
+        .table-container {
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .filter-card {
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+            margin-bottom: 22px;
+        }
+
+        .table-wrapper,
+        .table-responsive {
+            display: block !important;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .table {
+            min-width: 840px;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .table tbody td > span[style*="border-radius: 20px"] {
+            display: inline-flex !important;
+            align-items: center;
+            min-height: 30px;
+            border-radius: 6px !important;
+            background: #ecfdf5 !important;
+            color: #0f766e !important;
+            border: 1px solid rgba(15, 118, 110, 0.12);
+        }
+
+        .amount-cell,
+        td strong {
+            white-space: nowrap;
+        }
+
+        .action-buttons form {
+            margin: 0;
+        }
+
+        .btn-action {
+            min-width: 36px;
+            min-height: 36px;
+            box-shadow: none !important;
+        }
+
+        .btn-edit {
+            background: #fff7ed !important;
+            color: #9a3412 !important;
+        }
+
+        .btn-delete,
+        .btn-reject {
+            background: #fef2f2 !important;
+            color: #991b1b !important;
+        }
+
+        .btn-approve {
+            background: #ecfdf5 !important;
+            color: #047857 !important;
+        }
+
+        .empty-state {
+            padding: 64px 24px !important;
+            background:
+                linear-gradient(180deg, rgba(248, 251, 250, 0.76), #ffffff),
+                radial-gradient(circle at center top, rgba(15, 118, 110, 0.1), transparent 20rem);
+        }
+
+        .empty-state i {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: #94a3b8 !important;
+            font-size: 2rem !important;
+        }
+
+        .pagination {
+            padding: 18px 24px 24px;
+            margin-top: 0 !important;
+        }
+
+        .pagination .page-link,
+        .pagination a,
+        .pagination span {
+            border-radius: 8px !important;
+        }
+
+        .pagination .active .page-link,
+        .pagination .active,
+        .page-item.active .page-link {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        .form-container {
+            max-width: 760px !important;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 8px !important;
+            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
+            padding: 34px !important;
+        }
+
+        .form-card h1 {
+            font-size: 1.55rem !important;
+            color: #0f172a !important;
+        }
+
+        .form-card h1 i {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--primary-color) !important;
+            font-size: 1.3rem !important;
+        }
+
+        .form-subtitle,
+        .form-help {
+            color: var(--muted-color) !important;
+        }
+
+        .form-label {
+            color: #334155 !important;
+            font-size: 0.88rem !important;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%) !important;
+            border-radius: 8px !important;
+            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.2) !important;
+        }
+
+        .btn-cancel,
+        .btn-outline-secondary {
+            background: #f8fafc !important;
+            border: 1px solid #d8e2df !important;
+            color: #334155 !important;
+        }
+
+        .info-alert,
+        .warning-alert {
+            border-radius: 8px !important;
+            border-left: 0 !important;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .info-alert {
+            background: #ecfdf5 !important;
+        }
+
+        .info-alert p {
+            color: #065f46 !important;
+        }
+
+        .warning-alert {
+            background: #fffbeb !important;
+        }
+
+        .row.mb-4 > .col-md-8 h3 {
+            color: #0f172a;
+            font-weight: 750;
+        }
+
+        .row.mb-4 > .col-md-8 p {
+            color: var(--muted-color) !important;
+        }
+
+        .card.p-4,
+        .card.mb-4.p-4 {
+            padding: 26px !important;
+        }
+
+        .card h5,
+        .card h6 {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .badge.bg-primary {
+            background-color: #0f766e !important;
+        }
+
+        .badge.bg-success {
+            background-color: #16a34a !important;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc2626 !important;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 18px;
+            }
+
+            .form-card {
+                padding: 22px !important;
+            }
+
+            .table-container {
+                border-radius: 8px !important;
+            }
+        }
     </style>
     @yield('styles')
 </head>
@@ -578,6 +1052,23 @@
                 <span>Laporan Keuangan</span>
             </a>
 
+            @if (auth()->user()->role === 'admin')
+                <a href="{{ route('audit_logs.index') }}" class="nav-link @if(request()->routeIs('audit_logs.*')) active @endif">
+                    <i class="bi bi-activity"></i>
+                    <span>Audit Log</span>
+                </a>
+
+                <a href="{{ route('settings.masjid.edit') }}" class="nav-link @if(request()->routeIs('settings.masjid.*')) active @endif">
+                    <i class="bi bi-gear"></i>
+                    <span>Setting Masjid</span>
+                </a>
+            @endif
+
+            <a href="{{ route('transparansi.index') }}" class="nav-link" target="_blank">
+                <i class="bi bi-globe2"></i>
+                <span>Transparansi Publik</span>
+            </a>
+
             <div class="sidebar-divider"></div>
 
             <form action="{{ route('logout') }}" method="POST" class="nav-item">
@@ -589,12 +1080,16 @@
             </form>
         </div>
     </nav>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
         <!-- NAVBAR -->
         <nav class="navbar-top">
             <div class="navbar-title">
+                <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Buka menu">
+                    <i class="bi bi-list"></i>
+                </button>
                 <i class="bi bi-building"></i>
                 <span>Masjid Jami Baitul Rahman</span>
             </div>
@@ -659,11 +1154,50 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
             
-            // Add responsive behavior if needed
-            if (window.innerWidth <= 768) {
-                // Mobile specific handling
+            function closeSidebar() {
+                sidebar.classList.remove('show');
+                sidebarBackdrop.classList.remove('show');
             }
+
+            mobileMenuBtn?.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                sidebarBackdrop.classList.toggle('show');
+            });
+
+            sidebarBackdrop?.addEventListener('click', closeSidebar);
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeSidebar();
+                }
+            });
+
+            const rupiahInputs = document.querySelectorAll('.rupiah-input');
+            const formatter = new Intl.NumberFormat('id-ID');
+
+            function onlyDigits(value) {
+                return value.replace(/[^\d]/g, '');
+            }
+
+            function formatRupiahInput(input) {
+                const digits = onlyDigits(input.value);
+                input.value = digits ? 'Rp ' + formatter.format(Number(digits)) : '';
+            }
+
+            rupiahInputs.forEach(function(input) {
+                formatRupiahInput(input);
+
+                input.addEventListener('input', function() {
+                    formatRupiahInput(input);
+                });
+
+                input.form?.addEventListener('submit', function() {
+                    input.value = onlyDigits(input.value);
+                });
+            });
         });
     </script>
     

@@ -303,6 +303,91 @@
                 display: none;
             }
         }
+        /* PROFESSIONAL POLISH */
+        body {
+            background:
+                linear-gradient(rgba(7, 21, 19, 0.78), rgba(7, 21, 19, 0.82)),
+                linear-gradient(135deg, #0f766e 0%, #0f2f2b 48%, #132e2a 100%);
+            overflow: auto;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 78%);
+            pointer-events: none;
+        }
+
+        .bg-decoration {
+            display: none;
+        }
+
+        .login-wrapper {
+            min-height: 100vh;
+            padding: 32px 18px;
+        }
+
+        .login-container {
+            max-width: 430px;
+            padding: 42px 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 28px 70px rgba(2, 6, 23, 0.34);
+        }
+
+        .logo-icon {
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            box-shadow: 0 14px 28px rgba(15, 118, 110, 0.24);
+        }
+
+        .login-header h1 {
+            color: #0f172a;
+            font-size: 1.65rem;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .form-control {
+            border: 1px solid #d8e2df;
+            border-radius: 8px;
+            background: #fbfdfc;
+        }
+
+        .form-control:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.13);
+        }
+
+        .form-check-input {
+            accent-color: #0f766e;
+        }
+
+        .btn-login {
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.24);
+        }
+
+        .btn-login:hover {
+            box-shadow: 0 16px 30px rgba(15, 118, 110, 0.28);
+        }
+
+        .footer-link a {
+            color: #0f766e;
+        }
+
+        .footer-link a:hover {
+            color: #115e59;
+        }
     </style>
 </head>
 <body>

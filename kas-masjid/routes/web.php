@@ -5,6 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KasMasukController;
 use App\Http\Controllers\KasKeluarController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\MasjidSettingController;
+use App\Http\Controllers\TransparansiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +24,8 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+Route::get('/transparansi', [TransparansiController::class, 'index'])->name('transparansi.index');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -35,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
             ->name('kas_keluar.approve');
         Route::post('kas_keluar/{kas_keluar}/reject', [KasKeluarController::class, 'reject'])
             ->name('kas_keluar.reject');
+        Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit_logs.index');
+        Route::get('settings/masjid', [MasjidSettingController::class, 'edit'])->name('settings.masjid.edit');
+        Route::put('settings/masjid', [MasjidSettingController::class, 'update'])->name('settings.masjid.update');
     });
 });
 

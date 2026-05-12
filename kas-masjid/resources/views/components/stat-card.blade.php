@@ -8,10 +8,10 @@
 
 @php
     $typeClasses = [
-        'income' => 'border-left-color: #10b981; --bg-color: rgba(16, 185, 129, 0.05);',
-        'expense' => 'border-left-color: #ef4444; --bg-color: rgba(239, 68, 68, 0.05);',
-        'balance' => 'border-left-color: #3b82f6; --bg-color: rgba(59, 130, 246, 0.05);',
-        'primary' => 'border-left-color: #4f46e5; --bg-color: rgba(79, 70, 229, 0.05);',
+        'income' => 'border-left-color: #16a34a; --bg-color: rgba(22, 163, 74, 0.08);',
+        'expense' => 'border-left-color: #dc2626; --bg-color: rgba(220, 38, 38, 0.08);',
+        'balance' => 'border-left-color: #0f766e; --bg-color: rgba(15, 118, 110, 0.08);',
+        'primary' => 'border-left-color: #0f766e; --bg-color: rgba(15, 118, 110, 0.08);',
     ];
     $style = $typeClasses[$type] ?? $typeClasses['primary'];
 @endphp
@@ -34,9 +34,9 @@
 <style>
     .stat-card {
         background: white;
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 25px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
@@ -45,17 +45,17 @@
     .stat-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        right: -50px;
-        width: 100px;
-        height: 100px;
+        top: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
         background: var(--bg-color);
-        border-radius: 50%;
+        border-radius: 8px;
     }
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09);
     }
 
     .stat-label {
@@ -63,7 +63,7 @@
         color: #64748b;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.08em;
         margin-bottom: 12px;
         display: flex;
         align-items: center;
@@ -89,10 +89,10 @@
     }
 
     .stat-change.positive {
-        color: #10b981;
+        color: #16a34a;
     }
 
     .stat-change.negative {
-        color: #ef4444;
+        color: #dc2626;
     }
 </style>

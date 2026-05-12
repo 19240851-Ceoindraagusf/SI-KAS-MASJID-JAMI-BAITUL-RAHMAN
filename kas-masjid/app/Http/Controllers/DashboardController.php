@@ -15,6 +15,59 @@ class DashboardController extends Controller
         // Only count approved kas keluar for saldo calculation
         $totalKeluar = KasKeluar::where('status', 'approved')->sum('jumlah');
         $saldo = $totalMasuk - $totalKeluar;
+        $startOfMonth = now()->startOfMonth()->toDateString();
+        $endOfMonth = now()->endOfMonth()->toDateString();
+
+        $masukBulanIni = KasMasuk::whereBetween('tanggal', [$startOfMonth, $endOfMonth])->sum('jumlah');
+        $keluarBulanIni = KasKeluar::where('status', 'approved')
+            ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
+            ->sum('jumlah');
+        $saldoBulanIni = $masukBulanIni - $keluarBulanIni;
+        $pendingApprovalCount = KasKeluar::where('status', 'pending')->count();
+        $pendingApprovalTotal = KasKeluar::where('status', 'pending')->sum('jumlah');
+
+        $recentMasuks = KasMasuk::with('kategori', 'user')
+            ->latest('tanggal')
+            ->latest('id')
+            ->limit(5)
+            ->get()
+            ->map(fn ($item) => [
+                'type' => 'masuk',
+                'tanggal' => $item->tanggal,
+                'kategori' => $item->kategori->nama_kategori ?? '-',
+                'keterangan' => $item->keterangan,
+                'jumlah' => $item->jumlah,
+                'status' => 'approved',
+                'user' => $item->user->name ?? '-',
+            ]);
+
+        $recentKeluars = KasKeluar::with('kategori', 'user')
+            ->latest('tanggal')
+            ->latest('id')
+            ->limit(5)
+            ->get()
+            ->map(fn ($item) => [
+                'type' => 'keluar',
+                'tanggal' => $item->tanggal,
+                'kategori' => $item->kategori->nama_kategori ?? '-',
+                'keterangan' => $item->keterangan,
+                'jumlah' => $item->jumlah,
+                'status' => $item->status,
+                'user' => $item->user->name ?? '-',
+            ]);
+
+        $recentTransactions = $recentMasuks
+            ->merge($recentKeluars)
+            ->sortByDesc(fn ($item) => $item['tanggal']->timestamp)
+            ->take(6)
+            ->values();
+
+        $pendingApprovals = KasKeluar::with('kategori', 'user')
+            ->where('status', 'pending')
+            ->latest('tanggal')
+            ->latest('id')
+            ->limit(5)
+            ->get();
 
         // Data untuk Chart - Kas Masuk & Keluar per Kategori
         $kasMasukByKategori = KasMasuk::with('kategori')
@@ -66,7 +119,14 @@ class DashboardController extends Controller
             'kasMasukValues',
             'kasKeluarLabels',
             'kasKeluarValues',
-            'monthlyData'
+            'monthlyData',
+            'masukBulanIni',
+            'keluarBulanIni',
+            'saldoBulanIni',
+            'pendingApprovalCount',
+            'pendingApprovalTotal',
+            'recentTransactions',
+            'pendingApprovals'
         ));
     }
 }

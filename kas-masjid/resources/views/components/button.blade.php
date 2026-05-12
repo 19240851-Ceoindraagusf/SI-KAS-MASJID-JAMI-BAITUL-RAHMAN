@@ -9,12 +9,12 @@
 
 @php
     $variants = [
-        'primary' => 'background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white;',
-        'success' => 'background: #10b981; color: white;',
-        'danger' => 'background: #ef4444; color: white;',
-        'warning' => 'background: #f59e0b; color: white;',
-        'secondary' => 'background: #e2e8f0; color: #1e293b;',
-        'light' => 'background: #f1f5f9; color: #1e293b;'
+        'primary' => 'background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%); color: white;',
+        'success' => 'background: #16a34a; color: white;',
+        'danger' => 'background: #dc2626; color: white;',
+        'warning' => 'background: #d97706; color: white;',
+        'secondary' => 'background: #f8fafc; color: #334155; border: 1px solid #d8e2df;',
+        'light' => 'background: #f8fafc; color: #334155; border: 1px solid #e2e8f0;'
     ];
     
     $sizes = [
@@ -63,7 +63,7 @@
 
     .btn-component:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
     }
 
     .btn-component:active:not(:disabled) {

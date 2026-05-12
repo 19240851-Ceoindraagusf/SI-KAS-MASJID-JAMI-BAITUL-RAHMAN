@@ -230,14 +230,13 @@
                     Jumlah (Rupiah) <span class="required">*</span>
                 </label>
                 <input 
-                    type="number" 
-                    step="1" 
-                    min="0" 
-                    class="form-control @error('jumlah') is-invalid @enderror" 
+                    type="text" 
+                    inputmode="numeric"
+                    class="form-control rupiah-input @error('jumlah') is-invalid @enderror" 
                     id="jumlah" 
                     name="jumlah" 
                     value="{{ old('jumlah') }}" 
-                    placeholder="0"
+                    placeholder="Rp 0"
                     required
                 >
                 @error('jumlah')

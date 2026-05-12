@@ -211,7 +211,7 @@
             </span>
         </div>
 
-        <form action="{{ route('kas_keluar.update', $kasKeluar) }}" method="POST">
+        <form action="{{ route('kas_keluar.update', $kasKeluar) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -265,10 +265,9 @@
                     Jumlah (Rupiah) <span class="required">*</span>
                 </label>
                 <input 
-                    type="number" 
-                    step="1" 
-                    min="0" 
-                    class="form-control @error('jumlah') is-invalid @enderror" 
+                    type="text" 
+                    inputmode="numeric"
+                    class="form-control rupiah-input @error('jumlah') is-invalid @enderror" 
                     id="jumlah" 
                     name="jumlah" 
                     value="{{ old('jumlah', $kasKeluar->jumlah) }}" 
@@ -297,6 +296,31 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <p class="form-help">Minimal 3 karakter, maksimal 255 karakter</p>
+            </div>
+
+            <!-- Bukti -->
+            <div class="form-group">
+                <label for="bukti" class="form-label">
+                    <i class="bi bi-paperclip"></i>
+                    Bukti Transaksi
+                </label>
+                @if ($kasKeluar->bukti_path)
+                    <p class="form-help">
+                        Bukti saat ini:
+                        <a href="{{ asset('storage/' . $kasKeluar->bukti_path) }}" target="_blank">Lihat bukti</a>
+                    </p>
+                @endif
+                <input 
+                    type="file" 
+                    class="form-control @error('bukti') is-invalid @enderror" 
+                    id="bukti" 
+                    name="bukti" 
+                    accept=".jpg,.jpeg,.png,.pdf"
+                >
+                @error('bukti')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <p class="form-help">Kosongkan jika tidak ingin mengganti bukti. Format JPG, PNG, atau PDF maksimal 2MB.</p>
             </div>
 
             {{-- Status info for non-admin users --}}

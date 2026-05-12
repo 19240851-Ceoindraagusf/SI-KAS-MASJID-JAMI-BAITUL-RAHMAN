@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KasKeluar;
 use App\Models\KasMasuk;
+use App\Models\MasjidSetting;
 use App\Services\PdfService;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,7 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+        [$startDate, $endDate] = $this->resolvePeriod($request);
 
         $kasMasuks = KasMasuk::with('kategori', 'user')
             ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
@@ -48,13 +48,60 @@ class LaporanController extends Controller
 
     public function exportPdf(Request $request, string $type)
     {
-        if (!in_array($type, ['masuk', 'keluar'])) {
+        if (!in_array($type, ['masuk', 'keluar', 'gabungan'])) {
             abort(404);
         }
 
         try {
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
+            [$startDate, $endDate] = $this->resolvePeriod($request);
+            $setting = MasjidSetting::current();
+
+            if ($type === 'gabungan') {
+                $kasMasuks = KasMasuk::with('kategori', 'user')
+                    ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+                    ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+                    ->orderBy('tanggal', 'asc')
+                    ->get();
+
+                $kasKeluars = KasKeluar::with('kategori', 'user')
+                    ->where('status', 'approved')
+                    ->when($startDate, fn($query) => $query->whereDate('tanggal', '>=', $startDate))
+                    ->when($endDate, fn($query) => $query->whereDate('tanggal', '<=', $endDate))
+                    ->orderBy('tanggal', 'asc')
+                    ->get();
+
+                $totalMasuk = $kasMasuks->sum('jumlah');
+                $totalKeluar = $kasKeluars->sum('jumlah');
+                $saldoAkhir = $totalMasuk - $totalKeluar;
+                $judul = 'Laporan Keuangan Gabungan';
+                $fileName = 'laporan-keuangan-gabungan-' . now()->format('YmdHis') . '.pdf';
+                $data = collect();
+                $total = $saldoAkhir;
+
+                $html = view('laporan.pdf', compact(
+                    'data',
+                    'type',
+                    'startDate',
+                    'endDate',
+                    'judul',
+                    'total',
+                    'setting',
+                    'kasMasuks',
+                    'kasKeluars',
+                    'totalMasuk',
+                    'totalKeluar',
+                    'saldoAkhir'
+                ))->render();
+
+                $pdf = new PdfService();
+                $pdf->loadHtml($html)
+                    ->setPaper('A4', 'portrait')
+                    ->render();
+
+                return response($pdf->output(), 200)
+                    ->header('Content-Type', 'application/pdf')
+                    ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+            }
 
             $query = $type === 'masuk' ? KasMasuk::with('kategori', 'user') : KasKeluar::with('kategori', 'user');
 
@@ -70,7 +117,7 @@ class LaporanController extends Controller
             $fileName = "laporan-kas-{$type}-" . now()->format('YmdHis') . '.pdf';
 
             // Render the Blade template to HTML
-            $html = view('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total'))->render();
+            $html = view('laporan.pdf', compact('data', 'type', 'startDate', 'endDate', 'judul', 'total', 'setting'))->render();
 
             // Create PDF using PdfService
             $pdf = new PdfService();
@@ -90,5 +137,17 @@ class LaporanController extends Controller
             
             return back()->withErrors('Error: Gagal membuat PDF. ' . $e->getMessage());
         }
+    }
+
+    private function resolvePeriod(Request $request): array
+    {
+        $period = $request->input('period');
+
+        return match ($period) {
+            'this_month' => [now()->startOfMonth()->toDateString(), now()->endOfMonth()->toDateString()],
+            'last_month' => [now()->subMonthNoOverflow()->startOfMonth()->toDateString(), now()->subMonthNoOverflow()->endOfMonth()->toDateString()],
+            'this_year' => [now()->startOfYear()->toDateString(), now()->endOfYear()->toDateString()],
+            default => [$request->input('start_date'), $request->input('end_date')],
+        };
     }
 }

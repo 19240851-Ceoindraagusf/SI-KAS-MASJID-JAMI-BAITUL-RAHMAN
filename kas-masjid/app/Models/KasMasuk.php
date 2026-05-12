@@ -13,6 +13,7 @@ class KasMasuk extends Model
     protected $table = 'kas_masuks';
 
     protected $fillable = [
+        'kode_transaksi',
         'tanggal',
         'jumlah',
         'keterangan',

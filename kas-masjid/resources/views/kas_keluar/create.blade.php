@@ -177,7 +177,7 @@
         </h1>
         <p class="form-subtitle">Catat pengeluaran kas masjid baru</p>
 
-        <form action="{{ route('kas_keluar.store') }}" method="POST">
+        <form action="{{ route('kas_keluar.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Tanggal -->
@@ -230,14 +230,13 @@
                     Jumlah (Rupiah) <span class="required">*</span>
                 </label>
                 <input 
-                    type="number" 
-                    step="1" 
-                    min="0" 
-                    class="form-control @error('jumlah') is-invalid @enderror" 
+                    type="text" 
+                    inputmode="numeric"
+                    class="form-control rupiah-input @error('jumlah') is-invalid @enderror" 
                     id="jumlah" 
                     name="jumlah" 
                     value="{{ old('jumlah') }}" 
-                    placeholder="0"
+                    placeholder="Rp 0"
                     required
                 >
                 @error('jumlah')
@@ -264,6 +263,25 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <p class="form-help">Minimal 3 karakter, maksimal 255 karakter</p>
+            </div>
+
+            <!-- Bukti -->
+            <div class="form-group">
+                <label for="bukti" class="form-label">
+                    <i class="bi bi-paperclip"></i>
+                    Bukti Transaksi
+                </label>
+                <input 
+                    type="file" 
+                    class="form-control @error('bukti') is-invalid @enderror" 
+                    id="bukti" 
+                    name="bukti" 
+                    accept=".jpg,.jpeg,.png,.pdf"
+                >
+                @error('bukti')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <p class="form-help">Upload nota/foto bukti pembayaran. Format JPG, PNG, atau PDF maksimal 2MB.</p>
             </div>
 
             <!-- Warning Alert -->

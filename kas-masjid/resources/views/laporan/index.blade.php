@@ -44,6 +44,21 @@
             margin-bottom: 15px;
         }
     }
+
+    .quick-filter {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .quick-filter .btn {
+        min-height: 38px;
+    }
+
+    .summary-card {
+        border-left: 4px solid #0f766e !important;
+    }
 </style>
 @endsection
 
@@ -61,6 +76,20 @@
 </div>
 
 <div class="card mb-4 p-4">
+    <div class="quick-filter">
+        <a href="{{ route('laporan.index', ['period' => 'this_month']) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-calendar-month"></i> Bulan Ini
+        </a>
+        <a href="{{ route('laporan.index', ['period' => 'last_month']) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-calendar2-minus"></i> Bulan Lalu
+        </a>
+        <a href="{{ route('laporan.index', ['period' => 'this_year']) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-calendar3"></i> Tahun Ini
+        </a>
+        <a href="{{ route('laporan.export', ['type' => 'gabungan']) }}?start_date={{ $startDate }}&end_date={{ $endDate }}" class="btn btn-primary" target="_blank">
+            <i class="bi bi-file-earmark-pdf"></i> PDF Gabungan
+        </a>
+    </div>
     <form action="{{ route('laporan.index') }}" method="GET" class="row gy-3 align-items-end">
         <div class="col-md-4">
             <label for="start_date" class="form-label">Tanggal Mulai</label>
@@ -79,7 +108,7 @@
 
 <div class="row row-cols-1 row-cols-xl-3 g-4 mb-4">
     <div class="col">
-        <div class="card p-4 h-100">
+        <div class="card p-4 h-100 summary-card">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <div>
                     <h6 class="mb-1">Total Kas Masuk</h6>
@@ -90,7 +119,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card p-4 h-100">
+        <div class="card p-4 h-100 summary-card" style="border-left-color: #dc2626 !important;">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <div>
                     <h6 class="mb-1">Total Kas Keluar</h6>
@@ -101,7 +130,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card p-4 h-100">
+        <div class="card p-4 h-100 summary-card" style="border-left-color: #0f766e !important;">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <div>
                     <h6 class="mb-1">Saldo Akhir</h6>
@@ -133,6 +162,7 @@
             <thead class="table-light">
                 <tr>
                     <th>Tanggal</th>
+                    <th>Kode</th>
                     <th>Kategori</th>
                     <th>Keterangan</th>
                     <th>Jumlah</th>
@@ -143,6 +173,7 @@
                 @forelse ($kasMasuks as $item)
                     <tr>
                         <td>{{ $item->tanggal->format('d/m/Y') }}</td>
+                        <td>{{ $item->kode_transaksi ?: 'KM-' . str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</td>
                         <td>{{ $item->kategori->nama_kategori }}</td>
                         <td>{{ $item->keterangan }}</td>
                         <td><strong>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</strong></td>
@@ -150,7 +181,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center py-4">Belum ada data kas masuk</td>
+                        <td colspan="6" class="text-center py-4">Belum ada data kas masuk</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -178,10 +209,12 @@
             <thead class="table-light">
                 <tr>
                     <th>Tanggal</th>
+                    <th>Kode</th>
                     <th>Kategori</th>
                     <th>Keterangan</th>
                     <th>Jumlah</th>
                     <th>Status</th>
+                    <th>Bukti</th>
                     <th>Penginput</th>
                 </tr>
             </thead>
@@ -189,15 +222,23 @@
                 @forelse ($kasKeluars as $item)
                     <tr>
                         <td>{{ $item->tanggal->format('d/m/Y') }}</td>
+                        <td>{{ $item->kode_transaksi ?: 'KK-' . str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</td>
                         <td>{{ $item->kategori->nama_kategori }}</td>
                         <td>{{ $item->keterangan }}</td>
                         <td><strong>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</strong></td>
                         <td>{{ ucfirst($item->status) }}</td>
+                        <td>
+                            @if ($item->bukti_path)
+                                <a href="{{ asset('storage/' . $item->bukti_path) }}" target="_blank">Ada</a>
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td>{{ $item->user->name }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4">Belum ada data kas keluar</td>
+                        <td colspan="8" class="text-center py-4">Belum ada data kas keluar</td>
                     </tr>
                 @endforelse
             </tbody>

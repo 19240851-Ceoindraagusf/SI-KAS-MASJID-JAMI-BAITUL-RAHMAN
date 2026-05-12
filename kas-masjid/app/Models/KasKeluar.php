@@ -13,11 +13,13 @@ class KasKeluar extends Model
     protected $table = 'kas_keluars';
 
     protected $fillable = [
+        'kode_transaksi',
         'tanggal',
         'jumlah',
         'keterangan',
         'kategori_id',
         'status',
+        'bukti_path',
         'user_id',
     ];
 
