@@ -299,6 +299,35 @@
             background-color: #fef2f2;
         }
 
+        .password-field {
+            position: relative;
+        }
+
+        .password-field .form-control {
+            padding-right: 52px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 1.2rem;
+            line-height: 1;
+            padding: 6px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover,
+        .password-toggle:focus {
+            color: #0f766e;
+            outline: none;
+        }
+
         .form-control.is-invalid:focus {
             box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15),
                         0 8px 20px rgba(239, 68, 68, 0.15);
@@ -683,14 +712,19 @@
                     <label for="password" class="form-label">
                         <i class="bi bi-lock"></i> Password
                     </label>
-                    <input 
-                        type="password" 
-                        class="form-control @error('password') is-invalid @enderror" 
-                        id="password" 
-                        name="password" 
-                        placeholder="Masukkan password Anda"
-                        required
-                    >
+                    <div class="password-field">
+                        <input 
+                            type="password" 
+                            class="form-control @error('password') is-invalid @enderror" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Masukkan password Anda"
+                            required
+                        >
+                        <button type="button" class="password-toggle" data-toggle-password="password" aria-label="Tampilkan password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -722,5 +756,19 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('[data-toggle-password]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const input = document.getElementById(button.dataset.togglePassword);
+                const icon = button.querySelector('i');
+                const isHidden = input.type === 'password';
+
+                input.type = isHidden ? 'text' : 'password';
+                icon.classList.toggle('bi-eye', !isHidden);
+                icon.classList.toggle('bi-eye-slash', isHidden);
+                button.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
+            });
+        });
+    </script>
 </body>
 </html>
