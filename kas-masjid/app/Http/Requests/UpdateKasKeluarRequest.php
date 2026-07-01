@@ -20,14 +20,15 @@ class UpdateKasKeluarRequest extends FormRequest
     {
         $kasKeluar = $this->route('kas_keluar');
         
-        // Admin bisa update status
-        // Bendahara hanya bisa edit jika masih pending
+        // Admin bisa update data.
+        // Bendahara bisa edit data saat pending, atau menambahkan bukti setelah approved.
         if (auth()->user()->role === 'admin') {
             return true;
         }
         
         if (auth()->user()->role === 'bendahara') {
-            return $kasKeluar->status === 'pending' && $kasKeluar->user_id === auth()->id();
+            return in_array($kasKeluar->status, ['pending', 'approved'], true)
+                && $kasKeluar->user_id === auth()->id();
         }
         
         return false;
@@ -40,6 +41,14 @@ class UpdateKasKeluarRequest extends FormRequest
      */
     public function rules(): array
     {
+        $kasKeluar = $this->route('kas_keluar');
+
+        if (auth()->user()->role === 'bendahara' && $kasKeluar->status === 'approved') {
+            return [
+                'bukti' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            ];
+        }
+
         return [
             'tanggal' => 'required|date|date_format:Y-m-d',
             'jumlah' => 'required|numeric|min:0.01|max:999999999.99',

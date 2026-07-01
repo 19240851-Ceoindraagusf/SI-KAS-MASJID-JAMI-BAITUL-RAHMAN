@@ -265,30 +265,11 @@
                 <p class="form-help">Minimal 3 karakter, maksimal 255 karakter</p>
             </div>
 
-            <!-- Bukti -->
-            <div class="form-group">
-                <label for="bukti" class="form-label">
-                    <i class="bi bi-paperclip"></i>
-                    Bukti Transaksi
-                </label>
-                <input 
-                    type="file" 
-                    class="form-control @error('bukti') is-invalid @enderror" 
-                    id="bukti" 
-                    name="bukti" 
-                    accept=".jpg,.jpeg,.png,.pdf"
-                >
-                @error('bukti')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <p class="form-help">Upload nota/foto bukti pembayaran. Format JPG, PNG, atau PDF maksimal 2MB.</p>
-            </div>
-
             <!-- Warning Alert -->
             <div class="warning-alert">
                 <p>
                     <i class="bi bi-exclamation-triangle"></i>
-                    <strong>Perhatian!</strong> Data pengeluaran akan berstatus <strong>Pending</strong> dan menunggu persetujuan admin sebelum difinalisasi.
+                    <strong>Perhatian!</strong> Data pengeluaran akan berstatus <strong>Pending</strong>. Bukti transaksi dapat ditambahkan setelah kas keluar disetujui admin.
                 </p>
             </div>
 

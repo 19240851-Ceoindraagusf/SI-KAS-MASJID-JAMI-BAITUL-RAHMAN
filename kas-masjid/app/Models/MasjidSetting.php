@@ -31,4 +31,9 @@ class MasjidSetting extends Model
             'transparansi_publik' => true,
         ]);
     }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        return $this->logo_path ? asset('storage/' . $this->logo_path) : null;
+    }
 }

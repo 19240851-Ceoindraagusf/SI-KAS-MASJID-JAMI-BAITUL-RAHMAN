@@ -210,30 +210,67 @@
         margin: 0;
     }
 
-    .pagination {
+    .pagination-wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 20px;
-        gap: 5px;
+        padding: 22px 0 4px;
     }
 
-    .pagination a, .pagination span {
-        padding: 8px 12px;
-        border-radius: 6px;
-        color: #4f46e5;
-        text-decoration: none;
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
+    .pagination-wrapper nav {
+        width: 100%;
     }
 
-    .pagination .active {
-        background-color: #4f46e5;
-        color: white;
-        border-color: #4f46e5;
+    .pagination-wrapper .pagination {
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        flex-wrap: wrap;
     }
 
-    .pagination a:hover {
-        background-color: #f0f4ff;
+    .pagination-wrapper .page-item .page-link {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 14px;
+        border: 1px solid #d8e2df;
+        border-radius: 8px;
+        color: #334155;
+        background: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .pagination-wrapper .page-item:first-child .page-link,
+    .pagination-wrapper .page-item:last-child .page-link {
+        min-width: 104px;
+        gap: 6px;
+    }
+
+    .pagination-wrapper .page-item:not(.disabled) .page-link:hover {
+        background: #ecfdf5;
+        border-color: #0f766e;
+        color: #0f766e;
+        transform: translateY(-1px);
+    }
+
+    .pagination-wrapper .page-item.active .page-link {
+        background: #0f766e;
+        border-color: #0f766e;
+        color: #ffffff;
+        box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .pagination-wrapper .page-item.disabled .page-link {
+        background: #f8fafc;
+        color: #94a3b8;
+        border-color: #e6eeeb;
+        box-shadow: none;
+        cursor: not-allowed;
     }
 
     .filter-card {
@@ -249,6 +286,29 @@
         display: flex;
         gap: 10px;
         align-items: end;
+    }
+
+    .proof-warning {
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-left: 4px solid #f59e0b;
+        color: #78350f;
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+    }
+
+    .proof-missing {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #b45309;
+        font-size: 0.86rem;
+        font-weight: 700;
     }
 
     @media (max-width: 768px) {
@@ -268,6 +328,18 @@
         .filter-actions {
             flex-direction: column;
             align-items: stretch;
+        }
+
+        .pagination-wrapper .page-item .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 12px;
+            font-size: 0.84rem;
+        }
+
+        .pagination-wrapper .page-item:first-child .page-link,
+        .pagination-wrapper .page-item:last-child .page-link {
+            min-width: 86px;
         }
 
         .table thead th,
@@ -301,6 +373,13 @@
         </a>
     @endif
 </div>
+
+@if (auth()->user()->role === 'bendahara' && $missingBuktiCount > 0)
+    <div class="proof-warning">
+        <i class="bi bi-exclamation-triangle"></i>
+        <span>Ada {{ $missingBuktiCount }} kas keluar yang sudah approved tetapi belum memiliki bukti transaksi.</span>
+    </div>
+@endif
 
 <!-- Filters -->
 <div class="filter-card">
@@ -407,6 +486,10 @@
                                     <a href="{{ asset('storage/' . $item->bukti_path) }}" class="btn-action btn-edit" title="Lihat bukti" target="_blank">
                                         <i class="bi bi-paperclip"></i>
                                     </a>
+                                @elseif (auth()->user()->role === 'bendahara' && $item->user_id === auth()->id() && $item->status === 'approved')
+                                    <span class="proof-missing" title="Bukti transaksi belum ditambahkan">
+                                        <i class="bi bi-exclamation-triangle"></i> Belum ada
+                                    </span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -421,11 +504,11 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    {{-- Edit button: only for owner (bendahara) if pending, or admin --}}
-                                    @if ((auth()->user()->role === 'bendahara' && $item->user_id === auth()->id() && $item->status === 'pending') || 
+                                    {{-- Edit button: owner can edit pending data or add proof after approved; admin can edit all --}}
+                                    @if ((auth()->user()->role === 'bendahara' && $item->user_id === auth()->id() && in_array($item->status, ['pending', 'approved'], true)) || 
                                          (auth()->user()->role === 'admin'))
-                                        <a href="{{ route('kas_keluar.edit', $item) }}" class="btn-action btn-edit" title="Edit">
-                                            <i class="bi bi-pencil"></i>
+                                        <a href="{{ route('kas_keluar.edit', $item) }}" class="btn-action btn-edit" title="{{ $item->status === 'approved' && auth()->user()->role === 'bendahara' ? 'Tambah bukti' : 'Edit' }}">
+                                            <i class="bi {{ $item->status === 'approved' && auth()->user()->role === 'bendahara' ? 'bi-paperclip' : 'bi-pencil' }}"></i>
                                         </a>
                                     @endif
 
@@ -470,8 +553,8 @@
 
         <!-- Pagination -->
         @if ($items->hasPages())
-            <div class="pagination">
-                {{ $items->links() }}
+            <div class="pagination-wrapper">
+                {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }}
             </div>
         @endif
     @else

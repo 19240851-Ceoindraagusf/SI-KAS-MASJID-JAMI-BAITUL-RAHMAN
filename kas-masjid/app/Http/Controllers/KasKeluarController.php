@@ -44,8 +44,14 @@ class KasKeluarController extends Controller
             ->withQueryString();
 
         $kategoris = Kategori::where('tipe', 'kas_keluar')->orderBy('nama_kategori')->get();
+        $missingBuktiCount = $userRole === 'bendahara'
+            ? KasKeluar::where('user_id', auth()->id())
+                ->where('status', 'approved')
+                ->whereNull('bukti_path')
+                ->count()
+            : 0;
         
-        return view('kas_keluar.index', compact('items', 'kategoris', 'search', 'kategoriId', 'status', 'startDate', 'endDate'));
+        return view('kas_keluar.index', compact('items', 'kategoris', 'search', 'kategoriId', 'status', 'startDate', 'endDate', 'missingBuktiCount'));
     }
 
     /**
@@ -66,10 +72,6 @@ class KasKeluarController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['status'] = 'pending'; // Status default adalah pending
         $validated['kode_transaksi'] = TransactionCodeGenerator::generate('KK', KasKeluar::class);
-
-        if ($request->hasFile('bukti')) {
-            $validated['bukti_path'] = $request->file('bukti')->store('bukti-kas-keluar', 'public');
-        }
 
         $kasKeluar = KasKeluar::create($validated);
 
@@ -97,8 +99,8 @@ class KasKeluarController extends Controller
             abort(403, 'Anda tidak memiliki akses ke data ini');
         }
         
-        // Bendahara tidak boleh edit data yang sudah di-approve atau reject
-        if ($userRole === 'bendahara' && $kasKeluar->status !== 'pending') {
+        // Bendahara boleh edit transaksi pending, dan boleh menambahkan bukti setelah approved.
+        if ($userRole === 'bendahara' && $kasKeluar->status === 'rejected') {
             abort(403, 'Anda tidak bisa mengubah data yang sudah diproses');
         }
         
@@ -113,6 +115,21 @@ class KasKeluarController extends Controller
     {
         $validated = $request->validated();
         $oldValues = $kasKeluar->toArray();
+        $userRole = auth()->user()->role;
+
+        if ($userRole === 'bendahara' && $kasKeluar->status === 'approved') {
+            if (! $request->hasFile('bukti')) {
+                return back()
+                    ->withInput()
+                    ->with('warning', 'Bukti transaksi belum ditambahkan. Silakan upload nota/foto bukti pembayaran.');
+            }
+
+            $validated = [];
+        }
+
+        if ($userRole === 'bendahara' && $kasKeluar->status === 'pending') {
+            unset($validated['bukti']);
+        }
 
         if ($request->hasFile('bukti')) {
             if ($kasKeluar->bukti_path) {

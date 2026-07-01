@@ -9,7 +9,7 @@
             <i class="bi bi-gear"></i>
             Setting Identitas Masjid
         </h1>
-        <p class="form-subtitle">Data ini dipakai untuk kop laporan PDF dan halaman transparansi publik.</p>
+        <p class="form-subtitle">Data ini dipakai untuk login, daftar akun, dashboard, kop laporan PDF, dan halaman transparansi publik.</p>
 
         <form action="{{ route('settings.masjid.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -53,11 +53,14 @@
             <div class="form-group">
                 <label for="logo" class="form-label">Logo Masjid</label>
                 @if ($setting->logo_path)
-                    <p class="form-help">Logo saat ini: <a href="{{ asset('storage/' . $setting->logo_path) }}" target="_blank">Lihat logo</a></p>
+                    <div class="mb-3">
+                        <p class="form-help mb-2">Logo saat ini:</p>
+                        <img src="{{ asset('storage/' . $setting->logo_path) }}" alt="Logo {{ $setting->nama_masjid }}" style="width: 86px; height: 86px; object-fit: contain; border: 1px solid #d8e2df; border-radius: 8px; padding: 8px; background: #ffffff;">
+                    </div>
                 @endif
                 <input type="file" name="logo" id="logo" class="form-control @error('logo') is-invalid @enderror" accept=".jpg,.jpeg,.png">
                 @error('logo')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                <p class="form-help">Format JPG/PNG maksimal 2MB.</p>
+                <p class="form-help">Format JPG/PNG maksimal 2MB. Setelah disimpan, logo ini tampil di login, daftar akun, dashboard, sidebar, dan transparansi publik.</p>
             </div>
 
             <div class="form-group">

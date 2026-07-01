@@ -195,13 +195,22 @@
 @endsection
 
 @section('content')
+@php
+    $userRole = auth()->user()->role;
+    $isApprovedProofMode = $userRole === 'bendahara' && $kasKeluar->status === 'approved';
+    $canEditDetails = $userRole === 'admin' || $kasKeluar->status === 'pending';
+    $canUploadBukti = $userRole === 'admin' || $kasKeluar->status === 'approved';
+@endphp
+
 <div class="form-container">
     <div class="form-card">
         <h1>
-            <i class="bi bi-pencil-square"></i>
-            Edit Kas Keluar
+            <i class="bi {{ $isApprovedProofMode ? 'bi-paperclip' : 'bi-pencil-square' }}"></i>
+            {{ $isApprovedProofMode ? 'Tambah Bukti Transaksi' : 'Edit Kas Keluar' }}
         </h1>
-        <p class="form-subtitle">Perbarui data pengeluaran kas masjid</p>
+        <p class="form-subtitle">
+            {{ $isApprovedProofMode ? 'Upload nota atau bukti pembayaran untuk kas keluar yang sudah disetujui admin' : 'Perbarui data pengeluaran kas masjid' }}
+        </p>
 
         <!-- Status Badge -->
         <div>
@@ -215,6 +224,16 @@
             @csrf
             @method('PUT')
 
+            @if (! $canEditDetails)
+                <div class="warning-alert">
+                    <p>
+                        <i class="bi bi-check-circle"></i>
+                        <strong>Kas keluar sudah disetujui.</strong> Data transaksi tidak dapat diubah. Silakan tambahkan bukti transaksi di bawah ini.
+                    </p>
+                </div>
+            @endif
+
+            @if ($canEditDetails)
             <!-- Tanggal -->
             <div class="form-group">
                 <label for="tanggal" class="form-label">
@@ -297,7 +316,19 @@
                 @enderror
                 <p class="form-help">Minimal 3 karakter, maksimal 255 karakter</p>
             </div>
+            @else
+                <div class="form-group">
+                    <label class="form-label"><i class="bi bi-receipt"></i> Ringkasan Transaksi</label>
+                    <div class="form-control" style="height: auto; background: #f8fafc;">
+                        <strong>{{ $kasKeluar->kode_transaksi ?: 'KK-' . str_pad($kasKeluar->id, 5, '0', STR_PAD_LEFT) }}</strong><br>
+                        {{ $kasKeluar->tanggal->format('d/m/Y') }} - {{ $kasKeluar->kategori->nama_kategori ?? '-' }}<br>
+                        Rp {{ number_format($kasKeluar->jumlah, 0, ',', '.') }}<br>
+                        {{ $kasKeluar->keterangan }}
+                    </div>
+                </div>
+            @endif
 
+            @if ($canUploadBukti)
             <!-- Bukti -->
             <div class="form-group">
                 <label for="bukti" class="form-label">
@@ -320,15 +351,19 @@
                 @error('bukti')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <p class="form-help">Kosongkan jika tidak ingin mengganti bukti. Format JPG, PNG, atau PDF maksimal 2MB.</p>
+                <p class="form-help">
+                    {{ $kasKeluar->bukti_path ? 'Kosongkan jika tidak ingin mengganti bukti.' : 'Bukti transaksi belum ditambahkan.' }}
+                    Format JPG, PNG, atau PDF maksimal 2MB.
+                </p>
             </div>
+            @endif
 
             {{-- Status info for non-admin users --}}
             @if (auth()->user()->role !== 'admin')
                 <div class="warning-alert">
                     <p>
                         <i class="bi bi-info-circle"></i>
-                        <strong>Catatan:</strong> Anda hanya dapat mengedit data yang berstatus <strong>Pending</strong>. Untuk data yang sudah di-approve atau reject, hubungi admin.
+                        <strong>Catatan:</strong> Data transaksi hanya dapat diedit saat berstatus <strong>Pending</strong>. Setelah approved, bendahara hanya dapat menambahkan atau mengganti bukti transaksi.
                     </p>
                 </div>
             @endif
@@ -336,7 +371,7 @@
             <!-- Buttons -->
             <div class="button-group">
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-check-lg"></i> Perbarui Data
+                    <i class="bi bi-check-lg"></i> {{ $isApprovedProofMode ? 'Simpan Bukti' : 'Perbarui Data' }}
                 </button>
                 <a href="{{ route('kas_keluar.index') }}" class="btn-cancel">
                     <i class="bi bi-x-lg"></i> Batal

@@ -162,30 +162,67 @@
         margin: 0;
     }
 
-    .pagination {
+    .pagination-wrapper {
         display: flex;
         justify-content: center;
-        margin-top: 20px;
-        gap: 5px;
+        padding: 22px 0 4px;
     }
 
-    .pagination a, .pagination span {
-        padding: 8px 12px;
-        border-radius: 6px;
-        color: #4f46e5;
-        text-decoration: none;
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
+    .pagination-wrapper nav {
+        width: 100%;
     }
 
-    .pagination .active {
-        background-color: #4f46e5;
-        color: white;
-        border-color: #4f46e5;
+    .pagination-wrapper .pagination {
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        flex-wrap: wrap;
     }
 
-    .pagination a:hover {
-        background-color: #f0f4ff;
+    .pagination-wrapper .page-item .page-link {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 14px;
+        border: 1px solid #d8e2df;
+        border-radius: 8px;
+        color: #334155;
+        background: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .pagination-wrapper .page-item:first-child .page-link,
+    .pagination-wrapper .page-item:last-child .page-link {
+        min-width: 104px;
+        gap: 6px;
+    }
+
+    .pagination-wrapper .page-item:not(.disabled) .page-link:hover {
+        background: #ecfdf5;
+        border-color: #0f766e;
+        color: #0f766e;
+        transform: translateY(-1px);
+    }
+
+    .pagination-wrapper .page-item.active .page-link {
+        background: #0f766e;
+        border-color: #0f766e;
+        color: #ffffff;
+        box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .pagination-wrapper .page-item.disabled .page-link {
+        background: #f8fafc;
+        color: #94a3b8;
+        border-color: #e6eeeb;
+        box-shadow: none;
+        cursor: not-allowed;
     }
 
     .filter-card {
@@ -220,6 +257,18 @@
         .filter-actions {
             flex-direction: column;
             align-items: stretch;
+        }
+
+        .pagination-wrapper .page-item .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 12px;
+            font-size: 0.84rem;
+        }
+
+        .pagination-wrapper .page-item:first-child .page-link,
+        .pagination-wrapper .page-item:last-child .page-link {
+            min-width: 86px;
         }
 
         .table thead th,
@@ -357,8 +406,8 @@
 
         <!-- Pagination -->
         @if ($items->hasPages())
-            <div class="pagination">
-                {{ $items->links() }}
+            <div class="pagination-wrapper">
+                {{ $items->onEachSide(1)->links('pagination::bootstrap-5') }}
             </div>
         @endif
     @else

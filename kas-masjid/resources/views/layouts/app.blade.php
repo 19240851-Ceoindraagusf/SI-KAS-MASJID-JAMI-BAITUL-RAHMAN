@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Kas Masjid Baitul Rahman')</title>
+    <title>@yield('title', 'Kas ' . ($masjidSetting->nama_masjid ?? 'Masjid Jami Baitul Rahman'))</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -956,77 +956,7 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <!-- Mosque Logo SVG -->
-                <svg width="40" height="40" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                    <defs>
-                        <linearGradient id="dome-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:white;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:white;stop-opacity:0.75" />
-                        </linearGradient>
-                    </defs>
-                    <!-- Main building base -->
-                    <rect x="12" y="68" width="96" height="40" fill="white" opacity="0.9" rx="4"/>
-                    <path d="M 12 68 L 12 72 Q 12 76 16 76 L 104 76 Q 108 76 108 72 L 108 68" fill="white" opacity="0.95"/>
-                    
-                    <!-- Main Central Dome -->
-                    <ellipse cx="60" cy="45" rx="32" ry="38" fill="url(#dome-grad)"/>
-                    <ellipse cx="52" cy="38" rx="18" ry="22" fill="white" opacity="0.35"/>
-                    
-                    <!-- Secondary domes -->
-                    <ellipse cx="32" cy="52" rx="20" ry="26" fill="white" opacity="0.85"/>
-                    <ellipse cx="28" cy="46" rx="10" ry="14" fill="white" opacity="0.25"/>
-                    <ellipse cx="88" cy="52" rx="20" ry="26" fill="white" opacity="0.85"/>
-                    <ellipse cx="92" cy="46" rx="10" ry="14" fill="white" opacity="0.25"/>
-                    
-                    <!-- Central Spire with Crescent & Star -->
-                    <path d="M 60 8 L 57 28 L 63 28 Z" fill="white"/>
-                    <circle cx="60" cy="6" r="2.5" fill="white"/>
-                    <circle cx="60" cy="30" r="5" fill="none" stroke="white" stroke-width="0.8" opacity="0.6"/>
-                    
-                    <!-- Crescent moon -->
-                    <circle cx="58" cy="38" r="7.5" fill="white" opacity="0.8"/>
-                    <circle cx="63" cy="38" r="7.5" fill="#4f46e5" opacity="0.95"/>
-                    
-                    <!-- Star -->
-                    <g transform="translate(63, 32)">
-                        <polygon points="0,-4 1.2,-1.5 4,-1.5 1.5,0 2.5,3.5 0,1.5 -2.5,3.5 -1.5,0 -4,-1.5 -1.2,-1.5" fill="white"/>
-                    </g>
-                    
-                    <!-- Left minaret -->
-                    <rect x="15" y="45" width="8" height="40" fill="white" opacity="0.92"/>
-                    <line x1="19" y1="55" x2="19" y2="62" stroke="white" stroke-width="1" opacity="0.5"/>
-                    <line x1="19" y1="68" x2="19" y2="75" stroke="white" stroke-width="1" opacity="0.5"/>
-                    <rect x="13" y="42" width="12" height="4" fill="white" opacity="0.95"/>
-                    <path d="M 19 32 L 16 42 L 22 42 Z" fill="white" opacity="0.95"/>
-                    <circle cx="19" cy="30" r="2" fill="white"/>
-                    
-                    <!-- Right minaret -->
-                    <rect x="97" y="45" width="8" height="40" fill="white" opacity="0.92"/>
-                    <line x1="101" y1="55" x2="101" y2="62" stroke="white" stroke-width="1" opacity="0.5"/>
-                    <line x1="101" y1="68" x2="101" y2="75" stroke="white" stroke-width="1" opacity="0.5"/>
-                    <rect x="95" y="42" width="12" height="4" fill="white" opacity="0.95"/>
-                    <path d="M 101 32 L 98 42 L 104 42 Z" fill="white" opacity="0.95"/>
-                    <circle cx="101" cy="30" r="2" fill="white"/>
-                    
-                    <!-- Center minaret (tallest) -->
-                    <rect x="56" y="32" width="8" height="50" fill="white" opacity="0.95"/>
-                    <line x1="60" y1="48" x2="60" y2="55" stroke="white" stroke-width="1.2" opacity="0.5"/>
-                    <line x1="60" y1="65" x2="60" y2="72" stroke="white" stroke-width="1.2" opacity="0.5"/>
-                    <rect x="54" y="28" width="12" height="5" fill="white" opacity="0.98"/>
-                    <path d="M 60 12 L 56 28 L 64 28 Z" fill="white" opacity="0.98"/>
-                    <circle cx="60" cy="10" r="2.5" fill="white"/>
-                    
-                    <!-- Door -->
-                    <rect x="54" y="76" width="12" height="18" fill="#4f46e5" opacity="0.75" rx="1"/>
-                    <rect x="54" y="76" width="12" height="18" fill="none" stroke="white" stroke-width="0.8" opacity="0.4"/>
-                    <circle cx="64" cy="85" r="1.2" fill="white" opacity="0.6"/>
-                    
-                    <!-- Windows -->
-                    <circle cx="32" cy="80" r="2.5" fill="#4f46e5" opacity="0.6"/>
-                    <circle cx="88" cy="80" r="2.5" fill="#4f46e5" opacity="0.6"/>
-                    <circle cx="28" cy="90" r="2.5" fill="#4f46e5" opacity="0.5"/>
-                    <circle cx="92" cy="90" r="2.5" fill="#4f46e5" opacity="0.5"/>
-                </svg>
+                <x-masjid-logo :setting="$masjidSetting" :size="40" />
                 <h4 style="margin: 0; white-space: nowrap;">KAS MASJID</h4>
             </div>
         </div>
@@ -1090,8 +1020,11 @@
                 <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Buka menu">
                     <i class="bi bi-list"></i>
                 </button>
-                <i class="bi bi-building"></i>
-                <span>Masjid Jami Baitul Rahman</span>
+                <x-masjid-logo :setting="$masjidSetting" :size="28" />
+                <span>{{ $masjidSetting->nama_masjid }}</span>
+                @if ($masjidSetting->alamat)
+                    <small style="color: #64748b; font-weight: 500;">{{ $masjidSetting->alamat }}</small>
+                @endif
             </div>
 
             <div class="navbar-actions">

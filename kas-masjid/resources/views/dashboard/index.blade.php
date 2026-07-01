@@ -348,10 +348,16 @@
         border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
+    .dashboard-header img,
     .dashboard-header svg {
         width: 58px;
         height: 58px;
-        filter: brightness(0) invert(1) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.2)) !important;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.2)) !important;
+    }
+
+    .dashboard-header i {
+        color: #ffffff;
     }
 
     .stat-cards {
@@ -432,80 +438,14 @@
 <!-- Dashboard Header -->
 <div class="dashboard-header" style="display: flex; align-items: center; gap: 20px;">
     <div style="flex-shrink: 0;">
-        <svg width="80" height="80" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
-            <defs>
-                <linearGradient id="dashboard-dome-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:0.75" />
-                </linearGradient>
-            </defs>
-            <!-- Main building base -->
-            <rect x="12" y="68" width="96" height="40" fill="#4f46e5" opacity="0.9" rx="4"/>
-            <path d="M 12 68 L 12 72 Q 12 76 16 76 L 104 76 Q 108 76 108 72 L 108 68" fill="#4f46e5" opacity="0.95"/>
-            
-            <!-- Main Central Dome -->
-            <ellipse cx="60" cy="45" rx="32" ry="38" fill="url(#dashboard-dome-grad)"/>
-            <ellipse cx="52" cy="38" rx="18" ry="22" fill="#4f46e5" opacity="0.35"/>
-            
-            <!-- Secondary domes -->
-            <ellipse cx="32" cy="52" rx="20" ry="26" fill="#4f46e5" opacity="0.85"/>
-            <ellipse cx="28" cy="46" rx="10" ry="14" fill="#4f46e5" opacity="0.25"/>
-            <ellipse cx="88" cy="52" rx="20" ry="26" fill="#4f46e5" opacity="0.85"/>
-            <ellipse cx="92" cy="46" rx="10" ry="14" fill="#4f46e5" opacity="0.25"/>
-            
-            <!-- Central Spire with Crescent & Star -->
-            <path d="M 60 8 L 57 28 L 63 28 Z" fill="#4f46e5"/>
-            <circle cx="60" cy="6" r="2.5" fill="#4f46e5"/>
-            <circle cx="60" cy="30" r="5" fill="none" stroke="#4f46e5" stroke-width="0.8" opacity="0.6"/>
-            
-            <!-- Crescent moon -->
-            <circle cx="58" cy="38" r="7.5" fill="#4f46e5" opacity="0.8"/>
-            <circle cx="63" cy="38" r="7.5" fill="white" opacity="0.95"/>
-            
-            <!-- Star -->
-            <g transform="translate(63, 32)">
-                <polygon points="0,-4 1.2,-1.5 4,-1.5 1.5,0 2.5,3.5 0,1.5 -2.5,3.5 -1.5,0 -4,-1.5 -1.2,-1.5" fill="#4f46e5"/>
-            </g>
-            
-            <!-- Left minaret -->
-            <rect x="15" y="45" width="8" height="40" fill="#4f46e5" opacity="0.92"/>
-            <line x1="19" y1="55" x2="19" y2="62" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
-            <line x1="19" y1="68" x2="19" y2="75" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
-            <rect x="13" y="42" width="12" height="4" fill="#4f46e5" opacity="0.95"/>
-            <path d="M 19 32 L 16 42 L 22 42 Z" fill="#4f46e5" opacity="0.95"/>
-            <circle cx="19" cy="30" r="2" fill="#4f46e5"/>
-            
-            <!-- Right minaret -->
-            <rect x="97" y="45" width="8" height="40" fill="#4f46e5" opacity="0.92"/>
-            <line x1="101" y1="55" x2="101" y2="62" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
-            <line x1="101" y1="68" x2="101" y2="75" stroke="#4f46e5" stroke-width="1" opacity="0.5"/>
-            <rect x="95" y="42" width="12" height="4" fill="#4f46e5" opacity="0.95"/>
-            <path d="M 101 32 L 98 42 L 104 42 Z" fill="#4f46e5" opacity="0.95"/>
-            <circle cx="101" cy="30" r="2" fill="#4f46e5"/>
-            
-            <!-- Center minaret (tallest) -->
-            <rect x="56" y="32" width="8" height="50" fill="#4f46e5" opacity="0.95"/>
-            <line x1="60" y1="48" x2="60" y2="55" stroke="#4f46e5" stroke-width="1.2" opacity="0.5"/>
-            <line x1="60" y1="65" x2="60" y2="72" stroke="#4f46e5" stroke-width="1.2" opacity="0.5"/>
-            <rect x="54" y="28" width="12" height="5" fill="#4f46e5" opacity="0.98"/>
-            <path d="M 60 12 L 56 28 L 64 28 Z" fill="#4f46e5" opacity="0.98"/>
-            <circle cx="60" cy="10" r="2.5" fill="#4f46e5"/>
-            
-            <!-- Door -->
-            <rect x="54" y="76" width="12" height="18" fill="white" opacity="0.5" rx="1"/>
-            <rect x="54" y="76" width="12" height="18" fill="none" stroke="white" stroke-width="0.8" opacity="0.4"/>
-            <circle cx="64" cy="85" r="1.2" fill="white" opacity="0.6"/>
-            
-            <!-- Windows -->
-            <circle cx="32" cy="80" r="2.5" fill="white" opacity="0.5"/>
-            <circle cx="88" cy="80" r="2.5" fill="white" opacity="0.5"/>
-            <circle cx="28" cy="90" r="2.5" fill="white" opacity="0.4"/>
-            <circle cx="92" cy="90" r="2.5" fill="white" opacity="0.4"/>
-        </svg>
+        <x-masjid-logo :setting="$masjidSetting" :size="58" />
     </div>
     <div>
-        <h1 style="margin: 0;"><i class="bi bi-speedometer2"></i> Dashboard</h1>
-        <p style="margin: 5px 0 0 0;">Ringkasan keuangan dan statistik Masjid Jami Baitul Rahman</p>
+        <h1 style="margin: 0;">{{ $masjidSetting->nama_masjid }}</h1>
+        <p style="margin: 5px 0 0 0;">Ringkasan keuangan dan statistik kas masjid</p>
+        @if ($masjidSetting->alamat)
+            <p style="margin: 4px 0 0 0;"><i class="bi bi-geo-alt"></i> {{ $masjidSetting->alamat }}</p>
+        @endif
     </div>
 </div>
 
@@ -684,7 +624,7 @@
             <strong><i class="bi bi-check-lg"></i> Sistem Beroperasi Normal</strong>
         </p>
         <p style="margin-top: 8px;">
-            Selamat datang di Sistem Informasi Kas Masjid Jami Baitul Rahman. Dashboard ini menampilkan ringkasan keuangan terkini yang membantu Anda memantau aliran kas masjid.
+            Selamat datang di Sistem Informasi Kas {{ $masjidSetting->nama_masjid }}. Dashboard ini menampilkan ringkasan keuangan terkini yang membantu Anda memantau aliran kas masjid.
         </p>
     </div>
 

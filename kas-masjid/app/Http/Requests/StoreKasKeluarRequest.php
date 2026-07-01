@@ -34,7 +34,6 @@ class StoreKasKeluarRequest extends FormRequest
             'jumlah' => 'required|numeric|min:0.01|max:999999999.99',
             'keterangan' => 'required|string|max:255|min:3',
             'kategori_id' => 'required|integer|exists:kategoris,id',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
     }
 
@@ -57,8 +56,6 @@ class StoreKasKeluarRequest extends FormRequest
             'keterangan.min' => 'Keterangan minimal 3 karakter',
             'kategori_id.required' => 'Kategori harus dipilih',
             'kategori_id.exists' => 'Kategori tidak ditemukan',
-            'bukti.mimes' => 'Bukti harus berupa JPG, PNG, atau PDF',
-            'bukti.max' => 'Ukuran bukti maksimal 2MB',
         ];
     }
 }

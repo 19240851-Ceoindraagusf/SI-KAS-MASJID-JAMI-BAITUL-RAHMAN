@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar - Kas Masjid Baitul Rahman</title>
+    <title>Daftar - Kas {{ $masjidSetting->nama_masjid }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
@@ -17,10 +17,12 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, #0a1428 0%, #1a3a4a 30%, #0f766e 60%, #14b8a6 100%);
+            background:
+                linear-gradient(180deg, rgba(20, 184, 166, 0.14) 0%, rgba(15, 23, 42, 0) 45%),
+                linear-gradient(180deg, #0f2f2b 0%, #071513 100%);
             position: relative;
             overflow-x: hidden;
-            color: #1e293b;
+            color: #f8fafc;
         }
 
         body::before {
@@ -31,8 +33,8 @@
             width: 100%;
             height: 100%;
             background-image:
-                radial-gradient(circle at 20% 50%, rgba(20, 184, 166, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(20, 184, 166, 0.16) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(45, 212, 191, 0.12) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -45,8 +47,8 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 60% 70%, rgba(20, 184, 166, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             pointer-events: none;
             z-index: 0;
@@ -68,7 +70,7 @@
         .decoration-1 {
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(20, 184, 166, 0.3) 0%, rgba(20, 184, 166, 0) 70%);
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.22) 0%, rgba(20, 184, 166, 0) 70%);
             top: -100px;
             left: -100px;
             animation: float 8s ease-in-out infinite;
@@ -78,7 +80,7 @@
         .decoration-2 {
             width: 250px;
             height: 250px;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.25) 0%, rgba(79, 70, 229, 0) 70%);
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.18) 0%, rgba(45, 212, 191, 0) 70%);
             bottom: -50px;
             right: -50px;
             animation: float 10s ease-in-out infinite reverse;
@@ -88,7 +90,7 @@
         .decoration-3 {
             width: 200px;
             height: 200px;
-            background: radial-gradient(circle, rgba(106, 90, 205, 0.2) 0%, rgba(106, 90, 205, 0) 70%);
+            background: radial-gradient(circle, rgba(15, 118, 110, 0.22) 0%, rgba(15, 118, 110, 0) 70%);
             top: 50%;
             right: 10%;
             animation: float 12s ease-in-out infinite;
@@ -114,12 +116,12 @@
         }
 
         .register-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(10px);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #d9e2df;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25),
-                        0 0 1px rgba(255, 255, 255, 0.5) inset;
+                        0 0 1px rgba(255, 255, 255, 0.8) inset;
             width: 100%;
             max-width: 480px;
             padding: 48px 45px;
@@ -135,7 +137,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.5), transparent);
+            background: linear-gradient(90deg, transparent, rgba(15, 118, 110, 0.5), transparent);
         }
 
         @keyframes slideUp {
@@ -158,7 +160,7 @@
         .logo-icon {
             width: 96px;
             height: 96px;
-            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            background: linear-gradient(135deg, #0f2f2b 0%, #0f766e 100%);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -188,6 +190,15 @@
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
+        .uploaded-logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
+        }
+
         @keyframes shine {
             0% { transform: translate(-100%, -100%) rotate(45deg); }
             100% { transform: translate(100%, 100%) rotate(45deg); }
@@ -207,7 +218,7 @@
         .register-header h1 {
             font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -247,7 +258,7 @@
         .form-label {
             display: block;
             font-weight: 700;
-            color: #1e293b;
+            color: #0f172a;
             margin-bottom: 10px;
             font-size: 0.9rem;
             text-transform: uppercase;
@@ -261,12 +272,12 @@
         }
 
         .form-control {
-            border: 2px solid #e2e8f0;
+            border: 2px solid #d9e2df;
             border-radius: 12px;
             padding: 14px 18px;
             font-size: 1rem;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background-color: #f8fafc;
+            background-color: #ffffff;
             width: 100%;
             font-family: inherit;
         }
@@ -274,14 +285,14 @@
         .form-control:focus {
             border-color: #0f766e;
             background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15),
-                        0 8px 20px rgba(15, 118, 110, 0.2);
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.18),
+                        0 8px 20px rgba(15, 118, 110, 0.14);
             outline: none;
             transform: translateY(-2px);
         }
 
         .form-control:hover {
-            border-color: #cbd5e1;
+            border-color: #b9cbc6;
         }
 
         .form-control.is-invalid {
@@ -465,6 +476,10 @@
     </style>
 </head>
 <body>
+    @php
+        $authMasjidName = preg_replace('/^Masjid\s+/i', '', $masjidSetting->nama_masjid);
+    @endphp
+
     <div class="bg-decoration decoration-1"></div>
     <div class="bg-decoration decoration-2"></div>
     <div class="bg-decoration decoration-3"></div>
@@ -473,6 +488,9 @@
         <div class="register-container">
             <div class="register-header">
                 <div class="logo-icon">
+                    @if ($masjidSetting->logo_url)
+                        <img class="uploaded-logo" src="{{ $masjidSetting->logo_url }}" alt="Logo {{ $masjidSetting->nama_masjid }}">
+                    @else
                     <svg class="mosque-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="domegradient-register" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -497,7 +515,7 @@
                         <circle cx="60" cy="30" r="5" fill="none" stroke="white" stroke-width="0.8" opacity="0.6"/>
 
                         <circle cx="58" cy="38" r="7.5" fill="white" opacity="0.8"/>
-                        <circle cx="63" cy="38" r="7.5" fill="#4f46e5" opacity="0.95"/>
+                        <circle cx="63" cy="38" r="7.5" fill="#0f766e" opacity="0.95"/>
                         <g transform="translate(63, 32)">
                             <polygon points="0,-4 1.2,-1.5 4,-1.5 1.5,0 2.5,3.5 0,1.5 -2.5,3.5 -1.5,0 -4,-1.5 -1.2,-1.5" fill="white"/>
                         </g>
@@ -530,32 +548,33 @@
                         <circle cx="60" cy="26" r="5" fill="none" stroke="white" stroke-width="0.8" opacity="0.5"/>
                         <circle cx="60" cy="38" r="4.5" fill="none" stroke="white" stroke-width="0.7" opacity="0.4"/>
 
-                        <rect x="54" y="76" width="12" height="18" fill="#4f46e5" opacity="0.75" rx="1"/>
+                        <rect x="54" y="76" width="12" height="18" fill="#0f766e" opacity="0.75" rx="1"/>
                         <rect x="54" y="76" width="12" height="18" fill="none" stroke="white" stroke-width="0.8" opacity="0.4"/>
                         <circle cx="64" cy="85" r="1.2" fill="white" opacity="0.6"/>
 
-                        <circle cx="32" cy="80" r="2.5" fill="#4f46e5" opacity="0.6"/>
-                        <circle cx="88" cy="80" r="2.5" fill="#4f46e5" opacity="0.6"/>
-                        <circle cx="28" cy="90" r="2.5" fill="#4f46e5" opacity="0.5"/>
-                        <circle cx="92" cy="90" r="2.5" fill="#4f46e5" opacity="0.5"/>
+                        <circle cx="32" cy="80" r="2.5" fill="#0f766e" opacity="0.6"/>
+                        <circle cx="88" cy="80" r="2.5" fill="#0f766e" opacity="0.6"/>
+                        <circle cx="28" cy="90" r="2.5" fill="#0f766e" opacity="0.5"/>
+                        <circle cx="92" cy="90" r="2.5" fill="#0f766e" opacity="0.5"/>
 
-                        <rect x="28" y="80" width="5" height="5" fill="#4f46e5" opacity="0.6" rx="1"/>
+                        <rect x="28" y="80" width="5" height="5" fill="#0f766e" opacity="0.6" rx="1"/>
                         <line x1="30.5" y1="80" x2="30.5" y2="85" stroke="white" stroke-width="0.5" opacity="0.4"/>
                         <line x1="28" y1="82.5" x2="33" y2="82.5" stroke="white" stroke-width="0.5" opacity="0.4"/>
-                        <rect x="28" y="88" width="5" height="5" fill="#4f46e5" opacity="0.6" rx="1"/>
+                        <rect x="28" y="88" width="5" height="5" fill="#0f766e" opacity="0.6" rx="1"/>
                         <line x1="30.5" y1="88" x2="30.5" y2="93" stroke="white" stroke-width="0.5" opacity="0.4"/>
                         <line x1="28" y1="90.5" x2="33" y2="90.5" stroke="white" stroke-width="0.5" opacity="0.4"/>
 
-                        <rect x="87" y="80" width="5" height="5" fill="#4f46e5" opacity="0.6" rx="1"/>
+                        <rect x="87" y="80" width="5" height="5" fill="#0f766e" opacity="0.6" rx="1"/>
                         <line x1="89.5" y1="80" x2="89.5" y2="85" stroke="white" stroke-width="0.5" opacity="0.4"/>
                         <line x1="87" y1="82.5" x2="92" y2="82.5" stroke="white" stroke-width="0.5" opacity="0.4"/>
-                        <rect x="87" y="88" width="5" height="5" fill="#4f46e5" opacity="0.6" rx="1"/>
+                        <rect x="87" y="88" width="5" height="5" fill="#0f766e" opacity="0.6" rx="1"/>
                         <line x1="89.5" y1="88" x2="89.5" y2="93" stroke="white" stroke-width="0.5" opacity="0.4"/>
                         <line x1="87" y1="90.5" x2="92" y2="90.5" stroke="white" stroke-width="0.5" opacity="0.4"/>
                     </svg>
+                    @endif
                 </div>
                 <h1>Kas Masjid</h1>
-                <p>Baitul Rahman - Daftar Akun Baru</p>
+                <p>{{ $authMasjidName }}</p>
             </div>
 
             @if ($errors->any())
