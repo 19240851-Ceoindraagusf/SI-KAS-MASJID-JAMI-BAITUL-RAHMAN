@@ -465,6 +465,9 @@
             <p style="margin: 4px 0 0 0;"><i class="bi bi-geo-alt"></i> {{ $masjidSetting->alamat }}</p>
         @endif
     </div>
+    <div style="margin-left: auto; text-align: right; white-space: nowrap;">
+        <div id="dashboard-clock" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.9); font-weight: 600; line-height: 1.5;"></div>
+    </div>
 </div>
 
 <!-- Stat Cards -->

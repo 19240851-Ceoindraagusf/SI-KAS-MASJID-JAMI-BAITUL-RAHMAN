@@ -23,6 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'status',
+        'approved_at',
+        'approved_by',
     ];
 
     /**
@@ -42,6 +45,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'approved_at' => 'datetime',
         'password' => 'hashed',
     ];
 
@@ -75,5 +79,63 @@ class User extends Authenticatable
     public function isBendahara(): bool
     {
         return $this->role === 'bendahara';
+    }
+
+    /**
+     * Check if user is approved.
+     */
+    public function isApproved(): bool
+    {
+        return $this->status === 'approved';
+    }
+
+    /**
+     * Check if user is pending approval.
+     */
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    /**
+     * Get the user who approved this user.
+     */
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * Get pending bendahara approvals.
+     */
+    public static function getPendingBendaharaApprovals()
+    {
+        return self::where('role', 'bendahara')
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Approve a user.
+     */
+    public function approve($adminId = null)
+    {
+        $this->status = 'approved';
+        $this->approved_at = now();
+        $this->approved_by = $adminId ?? auth()->id();
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Reject a user (delete the user record).
+     */
+    public function reject()
+    {
+        $this->delete();
+
+        return true;
     }
 }

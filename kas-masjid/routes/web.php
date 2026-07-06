@@ -8,6 +8,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\MasjidSettingController;
 use App\Http\Controllers\TransparansiController;
+use App\Http\Controllers\UserApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,14 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+Route::get('/logo', function () {
+    $setting = \App\Models\MasjidSetting::current();
+    if ($setting->logo_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($setting->logo_path)) {
+        return \Illuminate\Support\Facades\Storage::disk('public')->response($setting->logo_path);
+    }
+    abort(404);
+})->name('logo.show');
+
 Route::get('/transparansi', [TransparansiController::class, 'index'])->name('transparansi.index');
 
 Route::middleware(['auth'])->group(function () {
@@ -36,6 +45,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Approval routes - Admin only
     Route::middleware(['role:admin'])->group(function () {
+        // User approval routes
+        Route::get('admin/user-approvals', [UserApprovalController::class, 'index'])->name('admin.user-approvals.index');
+        Route::get('admin/user-approvals/{user}', [UserApprovalController::class, 'show'])->name('admin.user-approvals.show');
+        Route::post('admin/user-approvals/{user}/approve', [UserApprovalController::class, 'approve'])->name('admin.user-approvals.approve');
+        Route::post('admin/user-approvals/{user}/reject', [UserApprovalController::class, 'reject'])->name('admin.user-approvals.reject');
+
+        // Expense approval routes
         Route::post('kas_keluar/{kas_keluar}/approve', [KasKeluarController::class, 'approve'])
             ->name('kas_keluar.approve');
         Route::post('kas_keluar/{kas_keluar}/reject', [KasKeluarController::class, 'reject'])

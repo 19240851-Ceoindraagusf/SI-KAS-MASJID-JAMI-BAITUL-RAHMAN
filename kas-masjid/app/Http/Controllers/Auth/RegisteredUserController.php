@@ -38,12 +38,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'bendahara',
+            'status' => 'pending', // Bendahara baru harus menunggu persetujuan admin
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // Jangan login langsung, tampilkan pesan menunggu persetujuan
+        return redirect(route('login', absolute: false))->with('status', 'Akun Anda telah dibuat. Silakan menunggu persetujuan dari admin untuk mengakses sistem.');
     }
 }

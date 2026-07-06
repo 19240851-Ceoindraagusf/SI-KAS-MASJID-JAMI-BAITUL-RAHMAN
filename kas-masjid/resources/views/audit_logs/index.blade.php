@@ -51,7 +51,7 @@
             <tbody>
                 @forelse ($logs as $log)
                     <tr>
-                        <td>{{ $log->created_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ \App\Helpers\DateHelper::formatIndonesianAuditLog($log->created_at) }}</td>
                         <td>{{ $log->user->name ?? 'Sistem' }}</td>
                         <td>
                             <span class="badge bg-light text-dark border">{{ ucfirst(str_replace('_', ' ', $log->action)) }}</span>

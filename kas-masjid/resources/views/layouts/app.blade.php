@@ -988,6 +988,11 @@
                     <span>Audit Log</span>
                 </a>
 
+                <a href="{{ route('admin.user-approvals.index') }}" class="nav-link @if(request()->routeIs('admin.user-approvals.*')) active @endif">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Persetujuan Bendahara</span>
+                </a>
+
                 <a href="{{ route('settings.masjid.edit') }}" class="nav-link @if(request()->routeIs('settings.masjid.*')) active @endif">
                     <i class="bi bi-gear"></i>
                     <span>Setting Masjid</span>
@@ -1021,13 +1026,20 @@
                     <i class="bi bi-list"></i>
                 </button>
                 <x-masjid-logo :setting="$masjidSetting" :size="28" />
-                <span>{{ $masjidSetting->nama_masjid }}</span>
-                @if ($masjidSetting->alamat)
-                    <small style="color: #64748b; font-weight: 500;">{{ $masjidSetting->alamat }}</small>
-                @endif
+                <div style="flex: 1;">
+                    <span>{{ $masjidSetting->nama_masjid }}</span>
+                    @if ($masjidSetting->alamat)
+                        <small style="color: #64748b; font-weight: 500; display: block;">{{ $masjidSetting->alamat }}</small>
+                    @endif
+                </div>
             </div>
 
             <div class="navbar-actions">
+                <!-- Dark Mode Toggle -->
+                <button class="dark-mode-toggle" data-toggle-dark-mode title="Ubah mode gelap/terang" aria-label="Ubah tema">
+                    <i class="bi bi-moon"></i>
+                </button>
+
                 <div class="user-profile">
                     <div class="user-avatar" title="{{ Auth::user()->name }}">
                         {{ substr(Auth::user()->name, 0, 1) }}
@@ -1132,6 +1144,16 @@
                 });
             });
         });
+    </script>
+
+    <!-- Dark Mode Script -->
+    <script>
+{!! file_get_contents(resource_path('js/dark-mode.js')) !!}
+    </script>
+    
+    <!-- Indonesian Clock Script -->
+    <script>
+{!! file_get_contents(resource_path('js/indonesian-clock.js')) !!}
     </script>
     
     @yield('scripts')

@@ -34,6 +34,16 @@ class MasjidSetting extends Model
 
     public function getLogoUrlAttribute(): ?string
     {
-        return $this->logo_path ? asset('storage/' . $this->logo_path) : null;
+        if (!$this->logo_path) {
+            return null;
+        }
+
+        // First, try to use the public storage symlink
+        if (file_exists(public_path('storage/' . $this->logo_path))) {
+            return asset('storage/' . $this->logo_path);
+        }
+
+        // Fallback to the logo route if symlink doesn't exist
+        return route('logo.show');
     }
 }
