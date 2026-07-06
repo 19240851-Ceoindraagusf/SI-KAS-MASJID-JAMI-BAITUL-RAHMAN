@@ -9,7 +9,7 @@ class StoreKasKeluarRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'jumlah' => preg_replace('/[^\d]/', '', (string) $this->input('jumlah')),
+            'jumlah' => \App\Services\MoneyParser::parse($this->input('jumlah')) ?? $this->input('jumlah'),
         ]);
     }
 

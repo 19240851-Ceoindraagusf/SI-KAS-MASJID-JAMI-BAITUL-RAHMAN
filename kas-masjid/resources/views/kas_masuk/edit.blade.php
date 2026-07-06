@@ -236,7 +236,7 @@
                     class="form-control rupiah-input @error('jumlah') is-invalid @enderror" 
                     id="jumlah" 
                     name="jumlah" 
-                    value="{{ old('jumlah', $kasMasuk->jumlah) }}" 
+                    value="{{ old('jumlah', number_format($kasMasuk->jumlah, 0, '', '')) }}" 
                     required
                 >
                 @error('jumlah')

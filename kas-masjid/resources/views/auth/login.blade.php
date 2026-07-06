@@ -709,20 +709,20 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="email" class="form-label">
-                        <i class="bi bi-envelope"></i> Email
+                    <label for="login" class="form-label">
+                        <i class="bi bi-person"></i> Email atau Username
                     </label>
                     <input 
-                        type="email" 
-                        class="form-control @error('email') is-invalid @enderror" 
-                        id="email" 
-                        name="email" 
-                        value="{{ old('email') }}" 
-                        placeholder="Masukkan email Anda"
+                        type="text" 
+                        class="form-control @error('login') is-invalid @enderror" 
+                        id="login" 
+                        name="login" 
+                        value="{{ old('login') }}" 
+                        placeholder="Masukkan email atau username Anda"
                         required 
                         autofocus
                     >
-                    @error('email')
+                    @error('login')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

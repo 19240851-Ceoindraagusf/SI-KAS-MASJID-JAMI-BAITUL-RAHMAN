@@ -46,7 +46,7 @@ class KasMasukController extends Controller
     public function store(Request $request)
     {
         $request->merge([
-            'jumlah' => preg_replace('/[^\d]/', '', (string) $request->input('jumlah')),
+            'jumlah' => \App\Services\MoneyParser::parse($request->input('jumlah')) ?? $request->input('jumlah'),
         ]);
 
         $validated = $request->validate([
@@ -81,7 +81,7 @@ class KasMasukController extends Controller
     public function update(Request $request, KasMasuk $kasMasuk)
     {
         $request->merge([
-            'jumlah' => preg_replace('/[^\d]/', '', (string) $request->input('jumlah')),
+            'jumlah' => \App\Services\MoneyParser::parse($request->input('jumlah')) ?? $request->input('jumlah'),
         ]);
 
         $validated = $request->validate([

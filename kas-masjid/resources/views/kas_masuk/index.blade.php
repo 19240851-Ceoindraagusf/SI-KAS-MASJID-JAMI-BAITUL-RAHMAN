@@ -29,7 +29,7 @@
     }
 
     .btn-add {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
         color: white;
         border: none;
         padding: 12px 24px;
@@ -44,7 +44,7 @@
 
     .btn-add:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 8px 20px rgba(15, 118, 110, 0.24);
         color: white;
     }
 
@@ -67,7 +67,7 @@
     }
 
     .table thead {
-        background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+        background: linear-gradient(135deg, #f8fbfa 0%, #ecfdf5 100%);
     }
 
     .table thead th {
@@ -285,6 +285,14 @@
             width: 100%;
             justify-content: center;
         }
+
+        .table-wrapper {
+            display: block;
+        }
+
+        .table {
+            min-width: 780px;
+        }
     }
 </style>
 @endsection
@@ -368,7 +376,7 @@
                                 <span class="badge bg-light text-dark border">{{ $item->kode_transaksi ?: 'KM-' . str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</span>
                             </td>
                             <td>
-                                <span style="background: #eef2ff; color: #4f46e5; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 500;">
+                                <span style="background: #ecfdf5; color: #0f766e; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;">
                                     {{ $item->kategori->nama_kategori }}
                                 </span>
                             </td>
@@ -378,7 +386,7 @@
                             </td>
                             <td>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="width: 32px; height: 32px; background: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.85rem;">
+                                    <div style="width: 32px; height: 32px; background: #0f766e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.85rem;">
                                         {{ substr($item->user->name, 0, 1) }}
                                     </div>
                                     <span>{{ $item->user->name }}</span>

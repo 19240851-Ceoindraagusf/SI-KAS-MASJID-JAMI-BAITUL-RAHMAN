@@ -26,7 +26,6 @@ class KasKeluarController extends Controller
         $endDate = $request->input('end_date');
         
         $query = KasKeluar::with('kategori', 'user')
-            ->when($userRole === 'bendahara', fn ($q) => $q->where('user_id', auth()->id()))
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($subQuery) use ($search) {
                     $subQuery->where('keterangan', 'like', "%{$search}%")
@@ -45,8 +44,7 @@ class KasKeluarController extends Controller
 
         $kategoris = Kategori::where('tipe', 'kas_keluar')->orderBy('nama_kategori')->get();
         $missingBuktiCount = $userRole === 'bendahara'
-            ? KasKeluar::where('user_id', auth()->id())
-                ->where('status', 'approved')
+            ? KasKeluar::where('status', 'approved')
                 ->whereNull('bukti_path')
                 ->count()
             : 0;

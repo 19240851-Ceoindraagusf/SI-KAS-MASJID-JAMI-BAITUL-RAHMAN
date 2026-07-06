@@ -29,7 +29,7 @@
     }
 
     .btn-add {
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
         color: white;
         border: none;
         padding: 12px 24px;
@@ -44,7 +44,7 @@
 
     .btn-add:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 8px 20px rgba(15, 118, 110, 0.24);
         color: white;
     }
 
@@ -67,7 +67,7 @@
     }
 
     .table thead {
-        background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+        background: linear-gradient(135deg, #f8fbfa 0%, #ecfdf5 100%);
     }
 
     .table thead th {
@@ -354,6 +354,14 @@
 
         .btn-action {
             width: 100%;
+        }
+
+        .table-wrapper {
+            display: block;
+        }
+
+        .table {
+            min-width: 980px;
         }
     }
 </style>

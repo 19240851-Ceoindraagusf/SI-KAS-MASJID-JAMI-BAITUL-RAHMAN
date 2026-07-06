@@ -32,7 +32,7 @@
         border-radius: 12px;
         padding: 25px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid #4f46e5;
+        border-left: 4px solid #0f766e;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
@@ -71,7 +71,7 @@
     }
 
     .stat-card.balance {
-        border-left-color: #3b82f6;
+        border-left-color: #0f766e;
     }
 
     .stat-card.balance::before {
@@ -139,7 +139,7 @@
     }
 
     .chart-card h5 i {
-        color: #4f46e5;
+        color: #0f766e;
         font-size: 1.3rem;
     }
 
@@ -158,8 +158,8 @@
     }
 
     .activity-message {
-        background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
-        border-left: 4px solid #4f46e5;
+        background: linear-gradient(135deg, #f8fbfa 0%, #ecfdf5 100%);
+        border-left: 4px solid #0f766e;
         padding: 20px;
         border-radius: 8px;
         margin-bottom: 15px;
@@ -333,6 +333,10 @@
         font-size: 1.75rem;
     }
 
+    .dashboard-header .dashboard-copy {
+        min-width: 0;
+    }
+
     .dashboard-header p {
         color: rgba(255, 255, 255, 0.78);
     }
@@ -367,6 +371,11 @@
     .stat-card {
         border-left: 0;
         padding: 24px;
+    }
+
+    .stat-card.balance {
+        background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+        border: 1px solid rgba(15, 118, 110, 0.18) !important;
     }
 
     .stat-card::before {
@@ -430,6 +439,15 @@
             align-items: flex-start !important;
             padding: 20px;
         }
+
+        .transaction-item {
+            grid-template-columns: 36px minmax(0, 1fr);
+        }
+
+        .transaction-amount {
+            grid-column: 2;
+            text-align: left;
+        }
     }
 </style>
 @endsection
@@ -440,7 +458,7 @@
     <div style="flex-shrink: 0;">
         <x-masjid-logo :setting="$masjidSetting" :size="58" />
     </div>
-    <div>
+    <div class="dashboard-copy">
         <h1 style="margin: 0;">{{ $masjidSetting->nama_masjid }}</h1>
         <p style="margin: 5px 0 0 0;">Ringkasan keuangan dan statistik kas masjid</p>
         @if ($masjidSetting->alamat)
@@ -628,7 +646,7 @@
         </p>
     </div>
 
-    <div class="activity-message" style="border-left-color: #3b82f6;">
+    <div class="activity-message" style="border-left-color: #0891b2;">
         <p>
             <strong><i class="bi bi-lightbulb"></i> Tips Penggunaan</strong>
         </p>
