@@ -6,6 +6,8 @@
 <style>
     .dashboard-header {
         margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
     }
 
     .dashboard-header h1 {
@@ -29,9 +31,9 @@
 
     .stat-card {
         background: white;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 25px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
         border-left: 4px solid #0f766e;
         transition: all 0.3s ease;
         position: relative;
@@ -51,7 +53,7 @@
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
     }
 
     .stat-card.income {
@@ -123,9 +125,10 @@
 
     .chart-card {
         background: white;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 25px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
     .chart-card h5 {
@@ -145,9 +148,10 @@
 
     .activity-card {
         background: white;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 25px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
     .activity-card h5 {
@@ -161,8 +165,9 @@
         background: linear-gradient(135deg, #f8fbfa 0%, #ecfdf5 100%);
         border-left: 4px solid #0f766e;
         padding: 20px;
-        border-radius: 8px;
+        border-radius: 10px;
         margin-bottom: 15px;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
     }
 
     .activity-message p {
@@ -323,9 +328,9 @@
     .dashboard-header {
         background: linear-gradient(135deg, #0f2f2b 0%, #0f766e 100%);
         color: white;
-        border-radius: 8px;
+        border-radius: 16px;
         padding: 24px;
-        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.14);
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
     }
 
     .dashboard-header h1 {
@@ -338,13 +343,27 @@
     }
 
     .dashboard-header p {
-        color: rgba(255, 255, 255, 0.78);
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .dashboard-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        margin-right: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        color: #f8fafc;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .dashboard-header > div:first-child {
-        width: 76px;
-        height: 76px;
-        border-radius: 8px;
+        width: 98px;
+        height: 98px;
+        border-radius: 12px;
         background: rgba(255, 255, 255, 0.12);
         display: flex;
         align-items: center;
@@ -354,8 +373,8 @@
 
     .dashboard-header img,
     .dashboard-header svg {
-        width: 58px;
-        height: 58px;
+        width: 76px;
+        height: 76px;
         object-fit: contain;
         filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.2)) !important;
     }
@@ -371,6 +390,8 @@
     .stat-card {
         border-left: 0;
         padding: 24px;
+        position: relative;
+        isolation: isolate;
     }
 
     .stat-card.balance {
@@ -464,6 +485,10 @@
         @if ($masjidSetting->alamat)
             <p style="margin: 4px 0 0 0;"><i class="bi bi-geo-alt"></i> {{ $masjidSetting->alamat }}</p>
         @endif
+        <div style="margin-top: 10px;">
+            <span class="dashboard-pill"><i class="bi bi-clock-history"></i> Update real-time</span>
+            <span class="dashboard-pill"><i class="bi bi-shield-check"></i> Informasi terjaga</span>
+        </div>
     </div>
     <div style="margin-left: auto; text-align: right; white-space: nowrap;">
         <div id="dashboard-clock" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.9); font-weight: 600; line-height: 1.5;"></div>
@@ -482,7 +507,7 @@
             Rp {{ number_format($totalMasuk, 0, ',', '.') }}
         </div>
         <div class="stat-change positive">
-            <i class="bi bi-check-circle"></i> Pemasukan bulan ini
+            <i class="bi bi-check-circle"></i> Pemasukan saat ini
         </div>
     </div>
 
@@ -496,7 +521,7 @@
             Rp {{ number_format($totalKeluar, 0, ',', '.') }}
         </div>
         <div class="stat-change negative">
-            <i class="bi bi-exclamation-circle"></i> Pengeluaran bulan ini
+            <i class="bi bi-exclamation-circle"></i> Pengeluaran saat ini
         </div>
     </div>
 
@@ -511,7 +536,7 @@
         </div>
         <div class="stat-change @if($saldo >= 0) positive @else negative @endif">
             <i class="bi @if($saldo >= 0) bi-arrow-up @else bi-arrow-down @endif"></i>
-            @if($saldo >= 0) Saldo Positif @else Saldo Negatif @endif
+            @if($saldo >= 0) Saldo saat ini positif @else Saldo saat ini negatif @endif
         </div>
     </div>
 </div>
